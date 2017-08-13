@@ -30,21 +30,6 @@ Servo myPendulum; //myPendulum is the servo and pendulum name
 
  
  
-void setup() {
-myPendulum.attach(servoPin); 
-pos=90; // set position variable to 90 degrees
-movePen (pos); //put pendulum to 90 degrees - neutral
-Serial.begin(9600);
-
-Serial.println("starting");
-pinMode(behindsensor, INPUT);
-pinMode(frontsensor, INPUT);
-pinMode(striphardsensor, INPUT);
-pinMode(minusnowbutton, INPUT);
-pinMode(plusnowbutton, INPUT);
-pinMode(startbutton, INPUT);
-}
-
 void movePen(int position)
 {
   Serial.print("Attempting to move pendulum to ");
@@ -62,6 +47,20 @@ void movePen(int position)
 
   movePen(position);
   Serial.println("success");
+}
+
+void setup() {
+  myPendulum.attach(servoPin); 
+  pos=90; // set position variable to 90 degrees
+  Serial.begin(9600);
+  Serial.println("starting");
+  movePen (pos); //put pendulum to 90 degrees - neutral
+  pinMode(behindsensor, INPUT);
+  pinMode(frontsensor, INPUT);
+  pinMode(striphardsensor, INPUT);
+  pinMode(minusnowbutton, INPUT);
+  pinMode(plusnowbutton, INPUT);
+  pinMode(startbutton, INPUT);
 }
  
 void loop() {
