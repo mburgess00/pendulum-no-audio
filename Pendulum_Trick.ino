@@ -42,10 +42,10 @@ void movePen(int position)
   if (position < 0)
   {
     Serial.println("Pendulum under 0, refusing to move there");
-    exit;
+    return;
   }
 
-  movePen(position);
+  myPendulum.write(position);
   Serial.println("success");
 }
 
@@ -66,7 +66,7 @@ void setup() {
 void loop() {
  
 //scan for start button and if high then stop program and return p to 90 - startbutton
-if(digitalRead(startbutton) == HIGH && !startstop)  //Positive voltage to pin is HIGH
+if(digitalRead(startbutton) == HIGH)  //Positive voltage to pin is HIGH
 {
  pos=90; 
  movePen (pos);
@@ -111,14 +111,14 @@ if((startstop) && (pos <= 180 && pos >= 0))
   
   //look for front \sensor with pendulum at 90 and go - 30 degrees
   
-  // if (digitalRead(frontsensor) == HIGH && pos == 90)
-  //{
-  //   pos=pos+(inc*3);
-  //   movePen (pos);
-  //    Serial.println("front sensor detected with neutral prospect, pendulum moves 30 degrees toward -");
-  //    Serial.println(pos);
-  //    delay(servoDelay);
-  //}
+  if (digitalRead(frontsensor) == LOW && pos == 90)
+  {
+  pos=pos+(inc*3);
+  movePen (pos);
+  Serial.println("front sensor detected with neutral prospect, pendulum moves 30 degrees toward -");
+  Serial.println(pos);
+  delay(servoDelay);
+  }
    
   //if behindsensor is high, pos = pos-10
    
@@ -142,19 +142,19 @@ if((startstop) && (pos <= 180 && pos >= 0))
     delay(servoDelay);
   }
 
-  // code to be able to press start button and restart program
-  //if (pos = 180)
-  //{
-  //  startstop=false;
-  //}
-  //if (pos = 0)
-  //{
-  //  startstop = false;
-  //}
-  //}
-
-
+//  code to be able to press start button and restart program
+  if (pos == 180)
+  {
+    startstop=false;
   }
+  if (pos == 0)
+  {
+    startstop = false;
+  }
+ }
+
+
+  
 }
  
 
