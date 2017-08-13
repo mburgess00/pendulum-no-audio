@@ -54,7 +54,7 @@ if(digitalRead(startbutton) == HIGH && !startstop)  //Positive voltage to pin is
  myPendulum.write (pos);
  Serial.println("startbutton pressed, servo at 90");
  delay(servoDelay);
-  startstop=true;
+ startstop=true;
 }
 
 if((startstop) && (pos <= 180 && pos >= 0))
