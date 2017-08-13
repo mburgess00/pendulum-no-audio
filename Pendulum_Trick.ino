@@ -28,6 +28,7 @@ const int servoPin = 3; //servo attached to pin 3
 
 Servo myPendulum; //myPendulum is the servo and pendulum name
  
+
  
  
 void setup() {
