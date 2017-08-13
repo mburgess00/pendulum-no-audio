@@ -56,17 +56,20 @@ void setup() {
   Serial.println("starting");
   movePen (pos); //put pendulum to 90 degrees - neutral
   pinMode(behindsensor, INPUT);
-  pinMode(frontsensor, INPUT);
+    pinMode(frontsensor, INPUT);
   pinMode(striphardsensor, INPUT);
   pinMode(minusnowbutton, INPUT);
+  digitalWrite(minusnowbutton, HIGH); // turn on pullup resistors
   pinMode(plusnowbutton, INPUT);
+  digitalWrite(plusnowbutton, HIGH); // turn on pullup resistors
   pinMode(startbutton, INPUT);
+  digitalWrite(startbutton, HIGH); // turn on pullup resistors
 }
  
 void loop() {
  
 //scan for start button and if high then stop program and return p to 90 - startbutton
-if(digitalRead(startbutton) == HIGH)  //Positive voltage to pin is HIGH
+if(digitalRead(startbutton) == LOW)  //Positive voltage to pin is HIGH
 {
  pos=90; 
  movePen (pos);
@@ -79,7 +82,7 @@ if((startstop) && (pos <= 180 && pos >= 0))
 {
   //scan for minusnow button and if high then p=180 - minusnow
    
-  if(digitalRead(minusnowbutton) == HIGH)
+  if(digitalRead(minusnowbutton) == LOW)
   {
     pos=180;
     movePen (pos);
@@ -89,7 +92,7 @@ if((startstop) && (pos <= 180 && pos >= 0))
   }
    
   //scan for plus button and if high then p=0 - plusnow
-  if (digitalRead(plusnowbutton) == HIGH)
+  if (digitalRead(plusnowbutton) == LOW)
   {
     pos=0; 
     movePen(pos);
