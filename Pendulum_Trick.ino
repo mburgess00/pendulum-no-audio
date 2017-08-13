@@ -44,6 +44,24 @@ pinMode(minusnowbutton, INPUT);
 pinMode(plusnowbutton, INPUT);
 pinMode(startbutton, INPUT);
 }
+
+void movePen(int position)
+{
+  Serial.println("Attempting to move pendulum to %s" % position);
+  if (position > 180)
+  {
+    Serial.println("Pendulum exceeded 180, refusing to move there");
+    exit;
+  }
+  if (position < 0)
+  {
+    Serial.println("Pendulum under 0, refusing to move there");
+    exit;
+  }
+
+  myPendulum.write(position);
+  Serial.println("success");
+}
  
 void loop() {
  
