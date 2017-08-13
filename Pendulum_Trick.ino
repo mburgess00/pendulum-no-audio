@@ -52,9 +52,9 @@ if(digitalRead(startbutton) == HIGH && !startstop) //Positive voltage to pin is 
 {
  pos=90; 
  myPendulum.write (pos);
- delay(servoDelay);
  Serial.println("startbutton pressed, servo at 90");
- startstop=true;
+ delay(servoDelay);
+  startstop=true;
 }
  if(startstop)
  {
@@ -64,9 +64,9 @@ if(digitalRead(minusnowbutton) == HIGH)
 {
   pos=180;
   myPendulum.write (pos);
-  delay(servoDelay);
-  Serial.println("minusnow button pressed, servo at 180");
-  startstop=false;
+ Serial.println("minusnow button pressed, servo at 180");
+ delay(servoDelay);
+    startstop=false;
 }
  
 //scan for plus button and if high then p=0 - plusnow
@@ -74,9 +74,9 @@ if (digitalRead(plusnowbutton) == HIGH)
 {
  pos=0; 
  myPendulum.write(pos);
- delay(servoDelay);
  Serial.println("plusnow button pressed, servo at 0");
- startstop=false;
+ delay(servoDelay);
+  startstop=false;
 }
  
 //start of the routine - must press striphard, and startpend =1 and pos=90
@@ -85,9 +85,9 @@ if (digitalRead(striphardsensor) == LOW && pos==90)
 {
   pos=pos-inc;
   myPendulum.write (pos);
-  delay(servoDelay);
-  Serial.println("striphardsenor detected, pendulum moves 10 degrees toward +");
-  Serial.println(pos);
+   Serial.println("striphardsenor detected, pendulum moves 10 degrees toward +");
+   delay(servoDelay);
+   Serial.println(pos);
 }
  
  
@@ -97,9 +97,9 @@ if (digitalRead(behindsensor) == LOW && pos!=90)
 {
   pos=pos-inc;
   myPendulum.write (pos);
-  delay(servoDelay);
     Serial.println("behindsenor detected, pendulum moves 10 degrees toward +");
     Serial.println(pos);
+    delay(servoDelay);
 }
  
 //if frontsensor is high, pos = pos+10
@@ -108,10 +108,9 @@ if (digitalRead(frontsensor) == LOW && pos!=90)
 {
   pos=pos+inc;
   myPendulum.write (pos);
-  delay(servoDelay);
     Serial.println("frontsenor detected, pendulum moves 10 degrees toward -");
     Serial.println(pos);
- 
+    delay(servoDelay);
 }
 }
 //scan for pos <=0 or >=180, if so then program complete and deactivate all buttons except startbutton
