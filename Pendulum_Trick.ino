@@ -93,7 +93,7 @@ if (digitalRead(striphardsensor) == LOW && pos==90)
  
 //if behindsensor is high, pos = pos-10
  
-if (digitalRead(behindsensor) == LOW && pos!=90 && (pos <= 180 && pos >= 0))
+if (digitalRead(behindsensor) == LOW && pos!=90 && (pos < 180 && pos > 0))
 {
   pos=pos-inc;
   myPendulum.write (pos);
@@ -104,7 +104,7 @@ if (digitalRead(behindsensor) == LOW && pos!=90 && (pos <= 180 && pos >= 0))
  
 //if frontsensor is high, pos = pos+10
  
-if (digitalRead(frontsensor) == LOW && pos!=90 && (pos <= 180 && pos >= 0))
+if (digitalRead(frontsensor) == LOW && pos!=90 && (pos < 180 && pos > 0))
 {
   pos=pos+inc;
   myPendulum.write (pos);
