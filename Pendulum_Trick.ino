@@ -89,7 +89,17 @@ if (digitalRead(striphardsensor) == LOW && pos==90)
    delay(servoDelay);
    Serial.println(pos);
 }
- 
+
+//look for front \sensor with pendulum at 90 and go - 30 degrees
+
+// if (digitalRead(frontsensor) == HIGH && pos == 90)
+//{
+//   pos=pos+(inc*3);
+//   myPendulum.write (pos);
+//    Serial.println("front sensor detected with neutral prospect, pendulum moves 30 degrees toward -");
+//    Serial.println(pos);
+//    delay(servoDelay);
+//}
  
 //if behindsensor is high, pos = pos-10
  
@@ -106,19 +116,26 @@ if (digitalRead(behindsensor) == LOW && pos!=90 && (pos < 180 && pos > 0))
  
 if (digitalRead(frontsensor) == LOW && pos!=90 && (pos < 180 && pos > 0))
 {
-  pos=pos+inc;
+  pos=pos+(inc*3);
   myPendulum.write (pos);
-    Serial.println("frontsenor detected, pendulum moves 10 degrees toward -");
+    Serial.println("frontsenor detected, pendulum moves 30 degrees toward -");
     Serial.println(pos);
     delay(servoDelay);
 }
-if (pos == 180 or pos == 0)
-{!startstop;
+
+// code to be able to press start button and restart program
+//if (pos = 180)
+//{
+//  startstop=false;
+//}
+//if (pos = 0)
+//{
+//  startstop = false;
+//}
+//}
 }
 }
-//scan for pos <=0 or >=180, if so then program complete and deactivate all buttons except startbutton
  
+
  
-//add HALT code here
- 
-}
+
