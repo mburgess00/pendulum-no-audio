@@ -33,7 +33,7 @@ Servo myPendulum; //myPendulum is the servo and pendulum name
 void setup() {
 myPendulum.attach(servoPin); 
 pos=90; // set position variable to 90 degrees
-myPendulum.write (pos); //put pendulum to 90 degrees - neutral
+movePen (pos); //put pendulum to 90 degrees - neutral
 Serial.begin(9600);
 
 Serial.println("starting");
@@ -59,7 +59,7 @@ void movePen(int position)
     exit;
   }
 
-  myPendulum.write(position);
+  movePen(position);
   Serial.println("success");
 }
  
@@ -69,7 +69,7 @@ void loop() {
 if(digitalRead(startbutton) == HIGH && !startstop)  //Positive voltage to pin is HIGH
 {
  pos=90; 
- myPendulum.write (pos);
+ movePen (pos);
  Serial.println("startbutton pressed, servo at 90");
  delay(servoDelay);
  startstop=true;
@@ -82,7 +82,7 @@ if((startstop) && (pos <= 180 && pos >= 0))
   if(digitalRead(minusnowbutton) == HIGH)
   {
     pos=180;
-    myPendulum.write (pos);
+    movePen (pos);
     Serial.println("minusnow button pressed, servo at 180");
     delay(servoDelay);
     startstop=false;
@@ -92,7 +92,7 @@ if((startstop) && (pos <= 180 && pos >= 0))
   if (digitalRead(plusnowbutton) == HIGH)
   {
     pos=0; 
-    myPendulum.write(pos);
+    movePen(pos);
     Serial.println("plusnow button pressed, servo at 0");
     delay(servoDelay);
     startstop=false;
@@ -103,7 +103,7 @@ if((startstop) && (pos <= 180 && pos >= 0))
   if (digitalRead(striphardsensor) == LOW && pos==90)
   {
     pos=pos-inc;
-    myPendulum.write (pos);
+    movePen (pos);
     Serial.println("striphardsenor detected, pendulum moves 10 degrees toward +");
     delay(servoDelay);
     Serial.println(pos);
@@ -114,7 +114,7 @@ if((startstop) && (pos <= 180 && pos >= 0))
   // if (digitalRead(frontsensor) == HIGH && pos == 90)
   //{
   //   pos=pos+(inc*3);
-  //   myPendulum.write (pos);
+  //   movePen (pos);
   //    Serial.println("front sensor detected with neutral prospect, pendulum moves 30 degrees toward -");
   //    Serial.println(pos);
   //    delay(servoDelay);
@@ -125,7 +125,7 @@ if((startstop) && (pos <= 180 && pos >= 0))
   if (digitalRead(behindsensor) == LOW && pos!=90 && (pos < 180 && pos > 0))
   {
     pos=pos-inc;
-    myPendulum.write (pos);
+    movePen (pos);
     Serial.println("behindsenor detected, pendulum moves 10 degrees toward +");
     Serial.println(pos);
     delay(servoDelay);
@@ -136,7 +136,7 @@ if((startstop) && (pos <= 180 && pos >= 0))
   if (digitalRead(frontsensor) == LOW && pos!=90 && (pos < 180 && pos > 0))
   {
     pos=pos+(inc*3);
-    myPendulum.write (pos);
+    movePen (pos);
     Serial.println("frontsenor detected, pendulum moves 30 degrees toward -");
     Serial.println(pos);
     delay(servoDelay);
