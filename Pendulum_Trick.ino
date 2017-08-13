@@ -48,7 +48,7 @@ pinMode(startbutton, INPUT);
 void loop() {
  
 //scan for start button and if high then stop program and return p to 90 - startbutton
-if(digitalRead(startbutton) == HIGH)&& !startstop  //Positive voltage to pin is HIGH
+if(digitalRead(startbutton) == HIGH && !startstop)  //Positive voltage to pin is HIGH
 {
  pos=90; 
  myPendulum.write (pos);
@@ -56,7 +56,7 @@ if(digitalRead(startbutton) == HIGH)&& !startstop  //Positive voltage to pin is 
  delay(servoDelay);
   startstop=true;
 }
- if(startstop) && (pos <= 180 && pos >= 0)
+ if((startstop) && (pos <= 180 && pos >= 0))
  {
 //scan for minusnow button and if high then p=180 - minusnow
  
