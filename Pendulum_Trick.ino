@@ -112,6 +112,9 @@ if (digitalRead(frontsensor) == LOW && pos!=90 && (pos < 180 && pos > 0))
     Serial.println(pos);
     delay(servoDelay);
 }
+if (pos == 180 or pos == 0)
+{!startstop;
+}
 }
 //scan for pos <=0 or >=180, if so then program complete and deactivate all buttons except startbutton
  
