@@ -9,7 +9,7 @@
 //startbutton: press button to stop the program and restart
  
 int pstart=0; //pendulum start position - neutral or straight down
-int servoDelay = 5000; //
+int servoDelay = 1000; //
 int inc = 10; //degrees to increment the servo - planned at 10 degrees
 int pos = 0; //servo position and location of the pendulum
 int startpend = 1; //flag to know striphard and no other sensor is monitored
@@ -48,7 +48,7 @@ pinMode(startbutton, INPUT);
 void loop() {
  
 //scan for start button and if high then stop program and return p to 90 - startbutton
-if(digitalRead(startbutton) == HIGH && !startstop) //Positive voltage to pin is HIGH
+if(digitalRead(startbutton) == HIGH && !startstop && (pos <= 180 && pos >= 0)) //Positive voltage to pin is HIGH
 {
  pos=90; 
  myPendulum.write (pos);
