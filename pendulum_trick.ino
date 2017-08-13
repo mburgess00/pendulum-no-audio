@@ -13,9 +13,10 @@ int servoDelay = 25; //
 int inc = 10; //degrees to increment the servo - planned at 10 degrees
 int pos = 0; //servo position and location of the pendulum
 int startpend = 1; //flag to know striphard and no other sensor is monitored
-int servoPin = 3; //servo attached to pin 3
 int startbutton = 0;
 int minusnowbutton = 0;
+
+boolean startstop = false;
  
 const int behindsensorPin = 4;     // behindsensor connected to pin 4
 const int frontsensorPin = 5;       //frontsensor connected to pin 5
@@ -23,7 +24,8 @@ const int striphardsensorPin = 6;   //striphard sensor connecte to pin 6
 const int minusnowbuttonPin = 7;   //striphard sensor connecte to pin 7
 const int plusnowbuttonPin = 8;   //striphard sensor connecte to pin 8
 const int startbuttonPin = 9;   //striphard sensor connecte to pin 9
- 
+const int servoPin = 3; //servo attached to pin 3 
+
 Servo myPendulum; //myPendulum is the servo and pendulum name
  
  
@@ -45,57 +47,65 @@ pinMode(startbuttonPin, INPUT);
 void loop() {
  
 //scan for start button and if high then stop program and return p to 90 - startbutton
-if(startbutton == HIGH)
+if(startbutton == HIGH) //Positive voltage to pin is HIGH
 {
-  myPendulum.write (90);
-  Serial.println("startbutton pressed, servo at 90");
+ pos=90; 
+ myPendulum.write (pos);
+ Serial.println("startbutton pressed, servo at 90");
+ startstop=true;
 }
- 
+ if(startstop)
+ {
 //scan for minusnow button and if high then p=180 - minusnow
  
 if(minusnowbutton == HIGH)
 {
-  myPendulum.write (180);
+  pos=180;
+  myPendulum.write (pos);
   Serial.println("minusnow button pressed, servo at 180");
+  startstop=false;
 }
  
 //scan for plus button and if high then p=0 - plusnow
 if (plusnowbuttonPin == HIGH)
 {
-  myPendulum.write(0);
-  Serial.println("plusnow button pressed, servo at 0");
+ pos=0; 
+ myPendulum.write(pos);
+ Serial.println("plusnow button pressed, servo at 0");
+ startstop=false;
 }
  
-//start of the routine - must press striphard, and startpend =1 and if so, index pos by inc
+//start of the routine - must press striphard, and startpend =1 and pos=90
  
-if (striphardsensorPin == HIGH)
+if (striphardsensorPin == HIGH && pos==90)
 {
-  inc=inc+10;
- myPendulum.write (inc);
+  pos=pos+inc;
+  myPendulum.write (pos);
   Serial.println("striphardsenor detected, pendulum moves 10 degrees toward +");
-  Serial.println(inc);
+  Serial.println(pos);
 }
  
  
 //if behindsensor is high, pos = pos-10
  
-if (behindsensorPin == HIGH)
+if (behindsensorPin == HIGH && pos!=90)
 {
-  inc=inc-10;
-  myPendulum.write (inc);
+  pos=pos-inc;
+  myPendulum.write (pos);
     Serial.println("behindsenor detected, pendulum moves 10 degrees toward +");
-    Serial.println(inc);
+    Serial.println(pos);
 }
  
 //if frontsensor is high, pos = pos+10
  
-if (frontsensorPin == HIGH)
+if (frontsensorPin == HIGH && pos!=90)
 {
-  inc=inc+10;
-  myPendulum.write (inc);
+  pos=pos+inc;
+  myPendulum.write (pos);
     Serial.println("frontsenor detected, pendulum moves 10 degrees toward -");
-    Serial.println(inc);
+    Serial.println(pos);
  
+}
 }
 //scan for pos <=0 or >=180, if so then program complete and deactivate all buttons except startbutton
  
