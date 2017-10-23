@@ -104,13 +104,23 @@ void loop() {
   //read the ultrasonic sensors
   long LeftDistance, RightDistance;
 
-  LeftDistance = SonarSensor(trigPinL, echoPinL);
-  delay(100);
+  
   RightDistance = SonarSensor(trigPinR, echoPinR);
-  //Serial.print("Left: ");
-  //Serial.println(LeftDistance);
-  //Serial.print("Right: ");
-  //Serial.println(RightDistance);
+  delay(100);
+  LeftDistance = SonarSensor(trigPinL, echoPinL);
+
+  if (!calmode)
+  {
+    if (LeftDistance < 10)
+    {
+      Serial.println("Sensed Left!");
+    }
+    if (RightDistance < 10)
+    {
+      Serial.println("Sensed Right!");
+    }
+  }
+
   
   if (irrecv.decode(&results)) 
   {
@@ -124,7 +134,6 @@ void loop() {
     if (resultCode == 0xFFFF)
     {
       resultCode = lastCode;
-      Serial.println("found last code");
       count++;
       Serial.println(count);
     }
@@ -145,20 +154,30 @@ void loop() {
         break;
       case BUTTON_A:
         Serial.println("A");
-        pos = 180;
-        Serial.println(pos);
-        myservo.write(pos);
+        if (!calmode)
+        {
+          pos = 180;
+          Serial.println(pos);
+          myservo.write(pos);
+        }
         break;
       case BUTTON_B:
         Serial.println("B");
-        pos = 90;
-        myservo.write(pos);
+        if (!calmode)
+        {
+          pos = calibration;
+          Serial.println(pos);
+          myservo.write(pos);
+        }
         break;
       case BUTTON_C:
         Serial.println("C");
-        pos = 0;
-        Serial.println(pos);
-        myservo.write(pos);
+        if (!calmode)
+        {
+          pos = 0;
+          Serial.println(pos);
+          myservo.write(pos);
+        }
         break;
       case BUTTON_UP:
         Serial.println("Up");
