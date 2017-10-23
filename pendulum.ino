@@ -1,14 +1,21 @@
 #include <Servo.h>
 #include <IRremote.h>
+#include <EEPROM.h>
 
 /*pins
 #PIN2 = IR DATA
 #PIN3 = Servo
 #PIN4 = Left ultrasonic trigger
 #PIN5 = Left ultrasonic echo
-#PIN7 = Left ultrasonic trigger
-#PIN6 = Left ultrasonic echo
+#PIN7 = Right ultrasonic trigger
+#PIN6 = Right ultrasonic echo
 */
+
+//ultrasonic
+#define trigPinL 4
+#define trigPinR 7
+#define echoPinL 5
+#define echoPinR 6
 
 //Initialize Remote
 const uint16_t BUTTON_POWER = 0xD827; // i.e. 0x10EFD827
@@ -30,23 +37,81 @@ uint16_t lastCode = 0; // This keeps track of the last code RX'd
 //Initialize Servo
 int SERVO_PIN = 3;
 Servo myservo;
-int pos = 90;
+int pos;
+
+boolean calmode=false;
+int count = 0;
+
+int eeAddress = 0;
+int calibration;
 
 void setup()
 {
   Serial.begin(9600);
   // In case the interrupt driver crashes on setup, give a clue
   // to the user what's going on.
+
+  //wait on serial
+  delay(5000);
   Serial.println("Enabling IRin");
   irrecv.enableIRIn(); // Start the receiver
   Serial.println("Enabled IRin");
 
   //servo
   myservo.attach(SERVO_PIN);
+ 
+
+  pinMode(trigPinL, OUTPUT);
+  pinMode(trigPinR, OUTPUT);
+  pinMode(echoPinL, INPUT);
+  pinMode(echoPinR, INPUT);
+
+
+  EEPROM.get( eeAddress, calibration);
+  Serial.print("Calibration value");
+  Serial.println(calibration);
+
+  if (calibration != -1)
+  {
+    pos = calibration;
+  }
+  else
+  {
+    pos = 90;
+  }
+
   myservo.write(pos);
+
+}
+
+long SonarSensor(int trigPin,int echoPin)
+{
+  long duration, distance;
+  digitalWrite(trigPin, LOW);
+  delayMicroseconds(2);
+  digitalWrite(trigPin, HIGH);
+  delayMicroseconds(10);
+  digitalWrite(trigPin, LOW);
+  duration = pulseIn(echoPin, HIGH);
+  distance = (duration/2) / 29.1;
+  return distance;
 }
 
 void loop() {
+
+
+
+  //read the ultrasonic sensors
+  long LeftDistance, RightDistance;
+
+  LeftDistance = SonarSensor(trigPinL, echoPinL);
+  delay(100);
+  RightDistance = SonarSensor(trigPinR, echoPinR);
+  //Serial.print("Left: ");
+  //Serial.println(LeftDistance);
+  //Serial.print("Right: ");
+  //Serial.println(RightDistance);
+  
   if (irrecv.decode(&results)) 
   {
     /* read the RX'd IR into a 16-bit variable: */
@@ -55,10 +120,20 @@ void loop() {
     /* The remote will continue to spit out 0xFFFFFFFF if a 
      button is held down. If we get 0xFFFFFFF, let's just
      assume the previously pressed button is being held down */
+
     if (resultCode == 0xFFFF)
+    {
       resultCode = lastCode;
+      Serial.println("found last code");
+      count++;
+      Serial.println(count);
+    }
     else
+    {
       lastCode = resultCode;
+      count = 0;
+    }
+
 
     // This switch statement checks the received IR code against
     // all of the known codes. Each button press produces a 
@@ -70,12 +145,20 @@ void loop() {
         break;
       case BUTTON_A:
         Serial.println("A");
+        pos = 180;
+        Serial.println(pos);
+        myservo.write(pos);
         break;
       case BUTTON_B:
         Serial.println("B");
+        pos = 90;
+        myservo.write(pos);
         break;
       case BUTTON_C:
         Serial.println("C");
+        pos = 0;
+        Serial.println(pos);
+        myservo.write(pos);
         break;
       case BUTTON_UP:
         Serial.println("Up");
@@ -85,24 +168,63 @@ void loop() {
         break;
       case BUTTON_LEFT:
         Serial.println("Left");
-        if (pos > 10)
+        if (calmode)
         {
-          pos -= 10;
-          Serial.println(pos);
-          myservo.write(pos);
+          if (pos < 180)
+          {
+            pos++;
+          }
         }
+        else
+        {
+          if (pos < 171)
+          {
+            pos += 10;
+          }
+        }
+        Serial.println(pos);
+        myservo.write(pos);
         break;
       case BUTTON_RIGHT:
         Serial.println("Right");
-        if (pos < 170)
+        if (calmode)
         {
-          pos += 10;
-          Serial.println(pos);
-          myservo.write(pos);
+          if (pos > 0)
+          {
+            pos--;
+          }
         }
+        else
+        {
+          if (pos > 9)
+          {
+            pos -= 10;
+          }
+        }
+        Serial.println(pos);
+        myservo.write(pos);
         break;
       case BUTTON_CIRCLE:
         Serial.println("Circle");
+        if (!calmode)
+        {
+          pos = 90;
+          myservo.write(pos);
+        }
+        
+        if (count == 15)
+        {
+          calmode=!calmode;
+          if (calmode)
+          {
+            Serial.println("Calibration mode enabled");
+          }
+          else
+          {
+            Serial.println("Calibration mode disabled");
+            EEPROM.put(eeAddress, pos);
+          }
+        }
         break;
       default:
         Serial.print("Unrecognized code received: 0x");
