@@ -112,14 +112,49 @@ void loop() {
 
   if (!calmode)
   {
-    if (LeftDistance < 10)
+    //netural
+    if (pos == calibration)
     {
-      Serial.println("Sensed Left!");
+      if ((LeftDistance < 10) && (LeftDistance > 5))
+      {
+        //move forward 10*
+        pos = pos - 10;
+      }
+      if (RightDistance < 10)
+      {
+        pos = pos + RightDistance;
+      }
     }
-    if (RightDistance < 10)
+    else
     {
-      Serial.println("Sensed Right!");
+      if (LeftDistance < 5)
+      {
+        //move forward 10* if possible, else move to end
+        if (pos > 9)
+        {
+          pos = pos - 10;
+        }
+        else
+        {
+          pos = 0;
+        }
+      }
+      if (RightDistance < 10)
+      {
+        if (pos+RightDistance > 180)
+        {
+          pos = 180;
+        }
+        else
+        {
+          pos = pos + RightDistance;
+        }
+      }
+       
     }
+
+    Serial.println(pos);
+    myservo.write(pos);
   }
 
   
