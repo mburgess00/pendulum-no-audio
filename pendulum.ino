@@ -110,6 +110,16 @@ void loop() {
   delay(100);
   LeftDistance = SonarSensor(trigPinL, echoPinL);
 
+
+  if (LeftDistance < 10)
+  {
+    Serial.println("Sensed Left!");
+  }
+  if (RightDistance < 10)
+  {
+    Serial.println("Sensed Right!");
+  }
+
   if (!calmode)
   {
     //netural
