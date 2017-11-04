@@ -149,7 +149,6 @@ void loop() {
 
   if (!calmode)
   {
-    currentpos = pos;
     //netural
     if (pos == calibration)
     {
@@ -222,7 +221,6 @@ void loop() {
     // This switch statement checks the received IR code against
     // all of the known codes. Each button press produces a 
     // serial output, and has an effect on the LED output.
-    currentpos = pos;
     switch (resultCode)
     {
       case BUTTON_POWER:
