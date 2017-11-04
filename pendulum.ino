@@ -103,16 +103,16 @@ void moveServo(int target)
 {
   int current = myservo.read();
   int movepos;
-  Serial.print("Current servo pos: ");
-  Serial.println(current);
-  Serial.print("Moving to: ");
-  Serial.println(target);
+//  Serial.print("Current servo pos: ");
+//  Serial.println(current);
+//  Serial.print("Moving to: ");
+//  Serial.println(target);
   if (current < target)
   {
     for (movepos = current; movepos <= target; movepos += 1)
     {
-      Serial.print("Moving to: ");
-      Serial.println(movepos);
+//      Serial.print("Moving to: ");
+//      Serial.println(movepos);
       myservo.write(movepos);
       delay(15);
     }
@@ -121,8 +121,8 @@ void moveServo(int target)
   {
     for (movepos =current; movepos >= target; movepos -= 1)
     {
-      Serial.print("Moving to: ");
-      Serial.println(movepos);
+//      Serial.print("Moving to: ");
+//      Serial.println(movepos);
       myservo.write(movepos);
       delay(15);
     }
@@ -195,7 +195,7 @@ void loop() {
        
     }
 
-    Serial.println(pos);
+//    Serial.println(pos);
     //myservo.write(pos);
     moveServo(pos); 
   }
