@@ -102,23 +102,28 @@ long SonarSensor(int trigPin,int echoPin)
 void moveServo(int target)
 {
   int current = myservo.read();
+  int movepos;
   Serial.print("Current servo pos: ");
   Serial.println(current);
   Serial.print("Moving to: ");
   Serial.println(target);
   if (current < target)
   {
-    for (pos = current; pos < target; pos += 1)
+    for (movepos = current; movepos <= target; movepos += 1)
     {
-      myservo.write(pos);
+      Serial.print("Moving to: ");
+      Serial.println(movepos);
+      myservo.write(movepos);
       delay(15);
     }
   }
   else if (current > target)
   {
-    for (pos =current; pos > target; pos -= 1)
+    for (movepos =current; movepos >= target; movepos -= 1)
     {
-      myservo.write(pos);
+      Serial.print("Moving to: ");
+      Serial.println(movepos);
+      myservo.write(movepos);
       delay(15);
     }
   }
