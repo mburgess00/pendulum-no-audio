@@ -113,11 +113,13 @@ void loop() {
 
   if (LeftDistance < 10)
   {
-    Serial.println("Sensed Left!");
+    Serial.print("Sensed Left ");
+    Serial.println(LeftDistance);
   }
   if (RightDistance < 10)
   {
-    Serial.println("Sensed Right!");
+    Serial.print("Sensed Right ");
+    Serial.println(RightDistance);
   }
 
   if (!calmode)
