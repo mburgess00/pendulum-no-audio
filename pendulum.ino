@@ -1,5 +1,5 @@
 #include <Servo.h>
-#include <IRremote.h>
+#include <IR_remote.h>
 #include <EEPROM.h>
 
 /*pins
@@ -77,6 +77,7 @@ void setup()
   }
   else
   {
+    calibration = 90;
     pos = 90;
   }
 
@@ -227,7 +228,7 @@ void loop() {
         Serial.println("Circle");
         if (!calmode)
         {
-          pos = 90;
+          pos = calibration;
           myservo.write(pos);
         }
         
@@ -242,6 +243,7 @@ void loop() {
           {
             Serial.println("Calibration mode disabled");
             EEPROM.put(eeAddress, pos);
+            calibration = pos;
           }
         }
         break;
