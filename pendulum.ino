@@ -81,7 +81,8 @@ void setup()
     pos = 90;
   }
 
-  myservo.write(pos);
+  //myservo.write(pos);
+  moveServo(pos);
 
 }
 
@@ -98,8 +99,32 @@ long SonarSensor(int trigPin,int echoPin)
   return distance;
 }
 
-void loop() {
+void moveServo(int target)
+{
+  int current = myservo.read();
+  Serial.print("Current servo pos: ");
+  Serial.println(current);
+  Serial.print("Moving to: ");
+  Serial.println(target);
+  if (current < target)
+  {
+    for (pos = current; pos < target; pos += 1)
+    {
+      myservo.write(pos);
+      delay(15);
+    }
+  }
+  else if (current > target)
+  {
+    for (pos =current; pos > target; pos -= 1)
+    {
+      myservo.write(pos);
+      delay(15);
+    }
+  }
+}
 
+void loop() {
 
 
   //read the ultrasonic sensors
@@ -124,6 +149,7 @@ void loop() {
 
   if (!calmode)
   {
+    currentpos = pos;
     //netural
     if (pos == calibration)
     {
@@ -166,7 +192,8 @@ void loop() {
     }
 
     Serial.println(pos);
-    myservo.write(pos);
+    //myservo.write(pos);
+    moveServo(pos); 
   }
 
   
@@ -195,6 +222,7 @@ void loop() {
     // This switch statement checks the received IR code against
     // all of the known codes. Each button press produces a 
     // serial output, and has an effect on the LED output.
+    currentpos = pos;
     switch (resultCode)
     {
       case BUTTON_POWER:
@@ -206,7 +234,8 @@ void loop() {
         {
           pos = 180;
           Serial.println(pos);
-          myservo.write(pos);
+          //myservo.write(pos);
+	  moveServo(pos);
         }
         break;
       case BUTTON_B:
@@ -215,7 +244,8 @@ void loop() {
         {
           pos = calibration;
           Serial.println(pos);
-          myservo.write(pos);
+          //myservo.write(pos);
+	  moveServo(pos);
         }
         break;
       case BUTTON_C:
@@ -224,7 +254,8 @@ void loop() {
         {
           pos = 0;
           Serial.println(pos);
-          myservo.write(pos);
+          //myservo.write(pos);
+	  moveServo(pos);
         }
         break;
       case BUTTON_UP:
@@ -250,7 +281,8 @@ void loop() {
           }
         }
         Serial.println(pos);
-        myservo.write(pos);
+        //myservo.write(pos);
+	moveServo(pos);
         break;
       case BUTTON_RIGHT:
         Serial.println("Right");
@@ -269,14 +301,16 @@ void loop() {
           }
         }
         Serial.println(pos);
-        myservo.write(pos);
+        //myservo.write(pos);
+	moveServo(pos);
         break;
       case BUTTON_CIRCLE:
         Serial.println("Circle");
         if (!calmode)
         {
           pos = calibration;
-          myservo.write(pos);
+          //myservo.write(pos);
+	  moveServo(pos);
         }
         
         if (count == 15)
