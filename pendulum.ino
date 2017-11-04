@@ -12,7 +12,7 @@
 */
 
 //how long to wait between moves
-const long interval = 5000; //5s
+const long interval = 2000; //5s
 
 //ultrasonic
 #define trigPinL 4
@@ -204,6 +204,10 @@ void loop() {
 
 //    Serial.println(pos);
     //myservo.write(pos);
+    Serial.print("Current position: ");
+    Serial.print(myservo.read());
+    Serial.print(", Want to move to: ");
+    Serial.println(pos);
     if (myservo.read() != pos)
     {
       moveServo(pos); 
