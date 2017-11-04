@@ -11,6 +11,9 @@
 #PIN6 = Right ultrasonic echo
 */
 
+//how long to wait between moves
+const long interval = 5000; //5s
+
 //ultrasonic
 #define trigPinL 4
 #define trigPinR 7
@@ -41,6 +44,8 @@ int pos;
 
 boolean calmode=false;
 int count = 0;
+
+long lastmove;
 
 int eeAddress = 0;
 int calibration;
@@ -83,6 +88,8 @@ void setup()
 
   //myservo.write(pos);
   moveServo(pos);
+
+  lastmove = millis();
 
 }
 
@@ -152,7 +159,7 @@ void loop() {
     Serial.println(RightDistance);
   }
 
-  if (!calmode)
+  if ((!calmode) && ((millis() - interval) > lastmove))
   {
     //netural
     if (pos == calibration)
@@ -197,7 +204,11 @@ void loop() {
 
 //    Serial.println(pos);
     //myservo.write(pos);
-    moveServo(pos); 
+    if (myservo.read() != pos)
+    {
+      moveServo(pos); 
+      lastmove = millis();
+    }
   }
 
   
