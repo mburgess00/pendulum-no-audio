@@ -43,6 +43,7 @@ Servo myservo;
 int pos;
 
 boolean calmode=false;
+boolean paused=false;
 int count = 0;
 
 long lastmove;
@@ -159,7 +160,7 @@ void loop() {
     Serial.println(RightDistance);
   }
 
-  if ((!calmode) && ((millis() - interval) > lastmove))
+  if ((!calmode) && ((millis() - interval) > lastmove) && (!paused))
   {
     //netural
     if (pos == calibration)
@@ -245,6 +246,18 @@ void loop() {
     {
       case BUTTON_POWER:
         Serial.println("Power");
+        if (count == 0)
+        {
+          paused = !paused;
+          if (paused)
+          {
+            Serial.println("Pausing the ultrasonic sensors");
+          }
+          else
+          {
+            Serial.println("Resuming the ultrasonic sensors");
+          }
+        }
         break;
       case BUTTON_A:
         Serial.println("A");
