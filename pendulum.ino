@@ -43,7 +43,7 @@ Servo myservo;
 int pos;
 
 boolean calmode=false;
-boolean paused=false;
+boolean paused=true;
 int count = 0;
 
 long lastmove;
@@ -122,7 +122,7 @@ void moveServo(int target)
 //      Serial.print("Moving to: ");
 //      Serial.println(movepos);
       myservo.write(movepos);
-      delay(15);
+      delay(30);
     }
   }
   else if (current > target)
@@ -132,7 +132,7 @@ void moveServo(int target)
 //      Serial.print("Moving to: ");
 //      Serial.println(movepos);
       myservo.write(movepos);
-      delay(15);
+      delay(30);
     }
   }
 }
