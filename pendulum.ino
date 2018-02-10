@@ -1,3 +1,6 @@
+#include <SoftwareSerial.h>
+#include <Adafruit_Soundboard.h>
+
 #include <Servo.h>
 #include <IR_remote.h>
 #include <EEPROM.h>
@@ -13,6 +16,16 @@
 
 //how long to wait between moves
 const long interval = 2000; //5s
+
+//Initialize Sound Board
+#define SFX_TX 5
+#define SFX_RX 6
+#define SFX_RST 4
+
+SoftwareSerial ss = SoftwareSerial(SFX_TX, SFX_RX);
+Adafruit_Soundboard sfx = Adafruit_Soundboard(&ss, NULL, SFX_RST);
+
+
 
 
 //Initialize Remote
@@ -54,6 +67,15 @@ int prevprogram = 3;
 //  3 = financial
 //  4 = retail
 //  5 = technology
+const char filenames[][4] = 
+{
+  "def",
+  "con",
+  "exi",
+  "fin",
+  "ret",
+  "tec"
+};
 int track = 0;
 
 long lastmillis;
@@ -73,9 +95,26 @@ void setup()
   //servo
   myservo.attach(SERVO_PIN);
  
+  if (!sfx.reset()) {
+    Serial.println("Not found");
+    while (1);
+  }
+  Serial.println("SFX board found");
 
+  uint8_t files = sfx.listFiles();
 
+  Serial.println("File Listing");
+  Serial.println("========================");
+  Serial.println();
+  Serial.print("Found "); Serial.print(files); Serial.println(" Files");
+  for (uint8_t f=0; f<files; f++) {
+    Serial.print(f); 
+    Serial.print("\tname: "); Serial.print(sfx.fileName(f));
+    Serial.print("\tsize: "); Serial.println(sfx.fileSize(f));
+  }
+  Serial.println("========================");
 
+    
   EEPROM.get( eeAddress, calibration);
   Serial.print("Calibration value");
   Serial.println(calibration);
@@ -129,6 +168,8 @@ void moveServo(int target)
 }
 
 void loop() {
+
+  char trackname[20];
 
   if ((millis() - interval) > lastmillis)
   {
@@ -256,6 +297,8 @@ void loop() {
             if ((track < 5)  && (count == 0))
             {
               track++;
+              sprintf(trackname, "$s%s", "T00", filenames[track]);
+              sfx.playTrack(trackname);
             }
             break;
           case 1: //program A - interact with pendulum
@@ -276,6 +319,8 @@ void loop() {
             if ((track > 0) && (count == 0))
             {
               track--;
+              sprintf(trackname, "$s%s", "T00", filenames[track]);
+              sfx.playTrack(trackname);
             }
             break;
           case 1: //program A - interact with pendulum
