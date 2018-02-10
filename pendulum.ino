@@ -14,11 +14,6 @@
 //how long to wait between moves
 const long interval = 2000; //5s
 
-//ultrasonic
-#define trigPinL 4
-#define trigPinR 7
-#define echoPinL 5
-#define echoPinR 6
 
 //Initialize Remote
 const uint16_t BUTTON_POWER = 0xD827; // i.e. 0x10EFD827
@@ -31,7 +26,8 @@ const uint16_t BUTTON_LEFT = 0x10EF;
 const uint16_t BUTTON_RIGHT = 0x807F;
 const uint16_t BUTTON_CIRCLE = 0x20DF;
 
-int RECV_PIN = 2;
+//int RECV_PIN = 2;
+int RECV_PIN = 14;
 IRrecv irrecv(RECV_PIN);
 decode_results results;
 uint16_t lastCode = 0; // This keeps track of the last code RX'd
@@ -42,14 +38,25 @@ int SERVO_PIN = 3;
 Servo myservo;
 int pos;
 
-boolean calmode=false;
-boolean paused=true;
 int count = 0;
 
 long lastmove;
 
 int eeAddress = 0;
 int calibration;
+
+int program = 3;
+int prevprogram = 3;
+//tracks:
+//  0 = default
+//  1 = construction
+//  2 = existing
+//  3 = financial
+//  4 = retail
+//  5 = technology
+int track = 0;
+
+long lastmillis;
 
 void setup()
 {
@@ -67,10 +74,6 @@ void setup()
   myservo.attach(SERVO_PIN);
  
 
-  pinMode(trigPinL, OUTPUT);
-  pinMode(trigPinR, OUTPUT);
-  pinMode(echoPinL, INPUT);
-  pinMode(echoPinR, INPUT);
 
 
   EEPROM.get( eeAddress, calibration);
@@ -91,20 +94,8 @@ void setup()
   moveServo(pos);
 
   lastmove = millis();
+  lastmillis = millis();
 
-}
-
-long SonarSensor(int trigPin,int echoPin)
-{
-  long duration, distance;
-  digitalWrite(trigPin, LOW);
-  delayMicroseconds(2);
-  digitalWrite(trigPin, HIGH);
-  delayMicroseconds(10);
-  digitalWrite(trigPin, LOW);
-  duration = pulseIn(echoPin, HIGH);
-  distance = (duration/2) / 29.1;
-  return distance;
 }
 
 void moveServo(int target)
@@ -139,81 +130,13 @@ void moveServo(int target)
 
 void loop() {
 
-
-  //read the ultrasonic sensors
-  long LeftDistance, RightDistance;
-
-  
-  RightDistance = SonarSensor(trigPinR, echoPinR);
-  delay(100);
-  LeftDistance = SonarSensor(trigPinL, echoPinL);
-
-
-  if (LeftDistance < 10)
+  if ((millis() - interval) > lastmillis)
   {
-    Serial.print("Sensed Left ");
-    Serial.println(LeftDistance);
-  }
-  if (RightDistance < 10)
-  {
-    Serial.print("Sensed Right ");
-    Serial.println(RightDistance);
-  }
-
-  if ((!calmode) && ((millis() - interval) > lastmove) && (!paused))
-  {
-    //netural
-    if (pos == calibration)
-    {
-      if ((LeftDistance < 10) && (LeftDistance > 5))
-      {
-        //move forward 10*
-        pos = pos - 10;
-      }
-      if (RightDistance < 10)
-      {
-        pos = pos + RightDistance;
-      }
-    }
-    else
-    {
-      if (LeftDistance < 5)
-      {
-        //move forward 10* if possible, else move to end
-        if (pos > 9)
-        {
-          pos = pos - 10;
-        }
-        else
-        {
-          pos = 0;
-        }
-      }
-      if (RightDistance < 10)
-      {
-        if (pos+RightDistance > 180)
-        {
-          pos = 180;
-        }
-        else
-        {
-          pos = pos + RightDistance;
-        }
-      }
-       
-    }
-
-//    Serial.println(pos);
-    //myservo.write(pos);
-    Serial.print("Current position: ");
-    Serial.print(myservo.read());
-    Serial.print(", Want to move to: ");
-    Serial.println(pos);
-    if (myservo.read() != pos)
-    {
-      moveServo(pos); 
-      lastmove = millis();
-    }
+    lastmillis = millis();
+    Serial.print("Track: ");
+    Serial.println(track);
+    Serial.print("Program mode: ");
+    Serial.println(program);
   }
 
   
@@ -248,115 +171,177 @@ void loop() {
         Serial.println("Power");
         if (count == 0)
         {
-          paused = !paused;
-          if (paused)
+          //select which program
+          if (program == 0)
           {
-            Serial.println("Pausing the ultrasonic sensors");
+            //exit calibration mode
+            Serial.println("Calibration mode disabled");
+            EEPROM.put(eeAddress, pos);
+            calibration = pos;
+            program = prevprogram;
           }
           else
           {
-            Serial.println("Resuming the ultrasonic sensors");
+            Serial.println("Mode select enabled");
+            //call audio file "please select program"
+            prevprogram = program;
+            program = 4;
           }
+        }
+        if (count == 15)
+        {
+          program = 0;
+          Serial.println("Calibration mode enabled");
+          //play audio for calibration mode
         }
         break;
       case BUTTON_A:
         Serial.println("A");
-        if (!calmode)
+        switch (program)
         {
-          pos = 180;
-          Serial.println(pos);
-          //myservo.write(pos);
-	  moveServo(pos);
+          case 0: //calibration
+            break;
+          case 1: //program A - interact with pendulum
+            break;
+          case 2: //program B - guess position
+            break;
+          case 3: //program C - instructor mode
+            break;
+          case 4: //program select mode
+            program = 1;
+            break;
         }
+        //Serial.println(pos);
+	//moveServo(pos);
         break;
       case BUTTON_B:
         Serial.println("B");
-        if (!calmode)
+        switch (program)
         {
-          pos = calibration;
-          Serial.println(pos);
-          //myservo.write(pos);
-	  moveServo(pos);
+          case 0: //calibration
+            break;
+          case 1: //program A - interact with pendulum
+            break;
+          case 2: //program B - guess position
+            break;
+          case 3: //program C - instructor mode
+            break;
+          case 4: //program select mode
+            program = 2;
+            break;
         }
         break;
       case BUTTON_C:
         Serial.println("C");
-        if (!calmode)
+        switch (program)
         {
-          pos = 0;
-          Serial.println(pos);
-          //myservo.write(pos);
-	  moveServo(pos);
+          case 0: //calibration
+            break;
+          case 1: //program A - interact with pendulum
+            break;
+          case 2: //program B - guess position
+            break;
+          case 3: //program C - instructor mode
+            break;
+          case 4: //program select mode
+            program = 3;
+            break;
         }
         break;
       case BUTTON_UP:
         Serial.println("Up");
+        switch (program)
+        {
+          case 0: //calibration
+            if ((track < 5)  && (count == 0))
+            {
+              track++;
+            }
+            break;
+          case 1: //program A - interact with pendulum
+            break;
+          case 2: //program B - guess position
+            break;
+          case 3: //program C - instructor mode
+            break;
+          case 4: //program select mode
+            break;
+        }
         break;
       case BUTTON_DOWN:
         Serial.println("Down");
+        switch (program)
+        {
+          case 0: //calibration
+            if ((track > 0) && (count == 0))
+            {
+              track--;
+            }
+            break;
+          case 1: //program A - interact with pendulum
+            break;
+          case 2: //program B - guess position
+            break;
+          case 3: //program C - instructor mode
+            break;
+          case 4: //program select mode
+            break;
+        }
         break;
       case BUTTON_LEFT:
         Serial.println("Left");
-        if (calmode)
+        switch (program)
         {
-          if (pos < 180)
-          {
-            pos++;
-          }
+          case 0: //calibration
+            if (pos < 180)
+            {
+              pos++;
+            }
+            break;
+          case 1: //program A - interact with pendulum
+            break;
+          case 2: //program B - guess position
+            break;
+          case 3: //program C - instructor mode
+            break;
+          case 4: //program select mode
+            break;
         }
-        else
-        {
-          if (pos < 171)
-          {
-            pos += 10;
-          }
-        }
-        Serial.println(pos);
-        //myservo.write(pos);
-	moveServo(pos);
         break;
       case BUTTON_RIGHT:
         Serial.println("Right");
-        if (calmode)
+        switch (program)
         {
-          if (pos > 0)
-          {
-            pos--;
-          }
+          case 0: //calibration
+            if (pos > 0)
+            {
+              pos--;
+            }
+            break;
+          case 1: //program A - interact with pendulum
+            break;
+          case 2: //program B - guess position
+            break;
+          case 3: //program C - instructor mode
+            break;
+          case 4: //program select mode
+            break;
         }
-        else
-        {
-          if (pos > 9)
-          {
-            pos -= 10;
-          }
-        }
-        Serial.println(pos);
-        //myservo.write(pos);
-	moveServo(pos);
         break;
       case BUTTON_CIRCLE:
         Serial.println("Circle");
-        if (!calmode)
+        switch (program)
         {
-          pos = calibration;
-          //myservo.write(pos);
-	  moveServo(pos);
-        }
-        
-        if (count == 15)
-        {
-          calmode=!calmode;
-          if (calmode)
-          {
-            Serial.println("Calibration mode enabled");
-          }
-          else
-          {
-            Serial.println("Calibration mode disabled");
-            EEPROM.put(eeAddress, pos);
-            calibration = pos;
-          }
+          case 0: //calibration
+            break;
+          case 1: //program A - interact with pendulum
+            break;
+          case 2: //program B - guess position
+            break;
+          case 3: //program C - instructor mode
+            break;
+          case 4: //program select mode
+            break;
         }
         break;
       default:
