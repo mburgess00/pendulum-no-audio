@@ -94,6 +94,8 @@ void setup()
 
   //servo
   myservo.attach(SERVO_PIN);
+
+  ss.begin(9600);
  
   if (!sfx.reset()) {
     Serial.println("Not found");
