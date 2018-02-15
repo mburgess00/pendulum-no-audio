@@ -296,6 +296,14 @@ void loop() {
         switch (program)
         {
           case 0: //calibration
+            break;
+          case 1: //program A - interact with pendulum
+            break;
+          case 2: //program B - guess position
+            break;
+          case 3: //program C - instructor mode
+            break;
+          case 4: //program select mode
             if ((track < 5)  && (count == 0))
             {
               track++;
@@ -304,14 +312,6 @@ void loop() {
               sfx.playTrack(trackname);
             }
             break;
-          case 1: //program A - interact with pendulum
-            break;
-          case 2: //program B - guess position
-            break;
-          case 3: //program C - instructor mode
-            break;
-          case 4: //program select mode
-            break;
         }
         break;
       case BUTTON_DOWN:
@@ -319,13 +319,6 @@ void loop() {
         switch (program)
         {
           case 0: //calibration
-            if ((track > 0) && (count == 0))
-            {
-              track--;
-              sprintf(trackname, "$s%s", "T00", filenames[track]);
-	      Serial.println(trackname);
-              sfx.playTrack(trackname);
-            }
             break;
           case 1: //program A - interact with pendulum
             break;
@@ -334,6 +327,13 @@ void loop() {
           case 3: //program C - instructor mode
             break;
           case 4: //program select mode
+	    if ((track > 0) && (count == 0))
+            {
+              track--;
+              sprintf(trackname, "$s%s", "T00", filenames[track]);
+	      Serial.println(trackname);
+              sfx.playTrack(trackname);
+            }
             break;
         }
         break;
