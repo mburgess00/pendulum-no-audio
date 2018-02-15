@@ -300,6 +300,7 @@ void loop() {
             {
               track++;
               sprintf(trackname, "$s%s", "T00", filenames[track]);
+	      Serial.println(trackname);
               sfx.playTrack(trackname);
             }
             break;
@@ -322,6 +323,7 @@ void loop() {
             {
               track--;
               sprintf(trackname, "$s%s", "T00", filenames[track]);
+	      Serial.println(trackname);
               sfx.playTrack(trackname);
             }
             break;
