@@ -307,7 +307,7 @@ void loop() {
             if ((track < 5)  && (count == 0))
             {
               track++;
-              sprintf(trackname, "$s%s", "T00", filenames[track]);
+              sprintf(trackname, "%s%s", "T00", filenames[track]);
 	      Serial.println(trackname);
               sfx.playTrack(trackname);
             }
@@ -330,7 +330,7 @@ void loop() {
 	    if ((track > 0) && (count == 0))
             {
               track--;
-              sprintf(trackname, "$s%s", "T00", filenames[track]);
+              sprintf(trackname, "%s%s", "T00", filenames[track]);
 	      Serial.println(trackname);
               sfx.playTrack(trackname);
             }
