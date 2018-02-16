@@ -78,6 +78,7 @@ const char filenames[][4] =
 };
 int track = 0;
 
+
 long lastmillis;
 
 void setup()
@@ -171,7 +172,7 @@ void moveServo(int target)
 
 void loop() {
 
-  char trackname[20];
+  char trackname[14];
 
   if ((millis() - interval) > lastmillis)
   {
@@ -307,7 +308,7 @@ void loop() {
             if ((track < 5)  && (count == 0))
             {
               track++;
-              sprintf(trackname, "%s%s", "T00", filenames[track]);
+              sprintf(trackname, "P%s%s  OGG\n", "T00", filenames[track]);
 	      Serial.println(trackname);
               sfx.playTrack(trackname);
             }
@@ -330,7 +331,7 @@ void loop() {
 	    if ((track > 0) && (count == 0))
             {
               track--;
-              sprintf(trackname, "%s%s", "T00", filenames[track]);
+              sprintf(trackname, "P%s%s  OGG\n", "T00", filenames[track]);
 	      Serial.println(trackname);
               sfx.playTrack(trackname);
             }
