@@ -249,6 +249,9 @@ void loop() {
           case 2: //program B - guess position
             break;
           case 3: //program C - instructor mode
+            //move pendulum to far left
+            pos = 180;
+            moveServo(pos);
             break;
           case 4: //program select mode
             program = 1;
@@ -268,6 +271,9 @@ void loop() {
           case 2: //program B - guess position
             break;
           case 3: //program C - instructor mode
+            //move pendulum to bottom (cal)
+            pos = calibration;
+            moveServo(pos);
             break;
           case 4: //program select mode
             program = 2;
@@ -285,6 +291,9 @@ void loop() {
           case 2: //program B - guess position
             break;
           case 3: //program C - instructor mode
+            //move pendulum to far right
+            pos = 0;
+            moveServo(pos);
             break;
           case 4: //program select mode
             program = 3;
@@ -348,10 +357,17 @@ void loop() {
             }
             break;
           case 1: //program A - interact with pendulum
+            //move pendulum to left
             break;
           case 2: //program B - guess position
             break;
           case 3: //program C - instructor mode
+            //move pendulum to left
+            if (pos < 180)
+            {
+              pos += 10;
+              moveServo(pos);
+            }
             break;
           case 4: //program select mode
             break;
@@ -368,10 +384,17 @@ void loop() {
             }
             break;
           case 1: //program A - interact with pendulum
+            //move pendulum to right
             break;
           case 2: //program B - guess position
             break;
           case 3: //program C - instructor mode
+            //move pendulum to right
+            if (pos > 0)
+            {
+              pos -= 10;
+              moveServo(pos);
+            }
             break;
           case 4: //program select mode
             break;
@@ -386,6 +409,7 @@ void loop() {
           case 1: //program A - interact with pendulum
             break;
           case 2: //program B - guess position
+            //see if pendulum is in the "correct" position
             break;
           case 3: //program C - instructor mode
             break;
