@@ -67,17 +67,16 @@ int prevprogram = 3;
 //  3 = financial
 //  4 = retail
 //  5 = technology
-const char filenames[][4] = 
+const char filenames[][6] = 
 {
-  "def",
-  "con",
-  "exi",
-  "fin",
-  "ret",
-  "tec"
+  "DEFAU",
+  "CONST",
+  "EXIST",
+  "FINAN",
+  "RETAI",
+  "TECHN"
 };
 int track = 0;
-
 
 long lastmillis;
 
@@ -172,7 +171,7 @@ void moveServo(int target)
 
 void loop() {
 
-  char trackname[14];
+  char trackname[20];
 
   if ((millis() - interval) > lastmillis)
   {
@@ -308,7 +307,7 @@ void loop() {
             if ((track < 5)  && (count == 0))
             {
               track++;
-              sprintf(trackname, "P%s%s  OGG\n", "T00", filenames[track]);
+              sprintf(trackname, "%s%s%s", "T00", filenames[track], "OGG\n");
 	      Serial.println(trackname);
               sfx.playTrack(trackname);
             }
@@ -331,7 +330,7 @@ void loop() {
 	    if ((track > 0) && (count == 0))
             {
               track--;
-              sprintf(trackname, "P%s%s  OGG\n", "T00", filenames[track]);
+              sprintf(trackname, "%s%s%s", "T00", filenames[track], "OGG\n");
 	      Serial.println(trackname);
               sfx.playTrack(trackname);
             }
