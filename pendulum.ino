@@ -247,7 +247,7 @@ void loop() {
 	//see if any targets hit
 	//if 4.5 hit, move to 3
 	//otherwise move to 5
-	if (digitalRead(SENS45))
+	if (digitalRead(SENS45)==HIGH)
 	{
 	  posnum = 3;
 	  //move servo
@@ -257,7 +257,7 @@ void loop() {
 	  Serial.println(trackname);
           sfx.playTrack(trackname);
 	}
-	else if (digitalRead(SENS55) || digitalRead(SENS65) || digitalRead(SENS75) || digitalRead(SENS85))
+	else if (digitalRead(SENS55)==HIGH || digitalRead(SENS65)==HIGH || digitalRead(SENS75)==HIGH || digitalRead(SENS85)==HIGH)
 	{
 	  posnum = 5;
 	  //move servo
@@ -273,7 +273,7 @@ void loop() {
 	//see if any targets hit
 	//if 5.5 hit, move to 4
 	//otherwise move to 6
-	if (digitalRead(SENS55))
+	if (digitalRead(SENS55)==HIGH)
 	{
 	  posnum = 4;
 	  //move servo
@@ -283,7 +283,7 @@ void loop() {
 	  Serial.println(trackname);
           sfx.playTrack(trackname);
 	}
-	else if (digitalRead(SENS45) || digitalRead(SENS65) || digitalRead(SENS75) || digitalRead(SENS85))
+	else if (digitalRead(SENS45)==HIGH || digitalRead(SENS65)==HIGH || digitalRead(SENS75)==HIGH || digitalRead(SENS85)==HIGH)
 	{
 	  posnum = 6;
 	  //move servo
@@ -299,7 +299,7 @@ void loop() {
 	//see if any targets hit
 	//if 7.5 hit, move to 5
 	//otherwise move to 7
-	if (digitalRead(SENS75))
+	if (digitalRead(SENS75)==HIGH)
 	{
 	  posnum = 5;
 	  //move servo
@@ -309,7 +309,7 @@ void loop() {
 	  Serial.println(trackname);
           sfx.playTrack(trackname);
 	}
-	else if (digitalRead(SENS45) || digitalRead(SENS55) || digitalRead(SENS65) || digitalRead(SENS85))
+	else if (digitalRead(SENS45)==HIGH || digitalRead(SENS55)==HIGH || digitalRead(SENS65)==HIGH || digitalRead(SENS85)==HIGH)
 	{
 	  posnum = 7;
 	  //move servo
@@ -325,7 +325,7 @@ void loop() {
 	//see if any targets hit
 	//if 7.5 hit, move to 6
 	//otherwise move to 8
-	if (digitalRead(SENS75))
+	if (digitalRead(SENS75)==HIGH)
 	{
 	  posnum = 6;
 	  //move servo
@@ -335,7 +335,7 @@ void loop() {
 	  Serial.println(trackname);
           sfx.playTrack(trackname);
 	}
-	else if (digitalRead(SENS45) || digitalRead(SENS55) || digitalRead(SENS65) || digitalRead(SENS85))
+	else if (digitalRead(SENS45)==HIGH || digitalRead(SENS55)==HIGH || digitalRead(SENS65)==HIGH || digitalRead(SENS85)==HIGH)
 	{
 	  posnum = 8;
 	  //move servo
@@ -351,7 +351,7 @@ void loop() {
 	//see if any targets hit
 	//if 8.5 hit, move to 7
 	//otherwise move to 9
-	if (digitalRead(SENS85))
+	if (digitalRead(SENS85)==HIGH)
 	{
 	  posnum = 7;
 	  //move servo
@@ -361,7 +361,7 @@ void loop() {
 	  Serial.println(trackname);
           sfx.playTrack(trackname);
 	}
-	else if (digitalRead(SENS45) || digitalRead(SENS55) || digitalRead(SENS65) || digitalRead(SENS75))
+	else if (digitalRead(SENS45)==HIGH || digitalRead(SENS55)==HIGH || digitalRead(SENS65)==HIGH || digitalRead(SENS75)==HIGH)
 	{
 	  posnum = 9;
 	  //move servo
