@@ -5,15 +5,6 @@
 #include <IR_remote.h>
 #include <EEPROM.h>
 
-/*pins
-#PIN2 = IR DATA
-#PIN3 = Servo
-#PIN4 = Left ultrasonic trigger
-#PIN5 = Left ultrasonic echo
-#PIN7 = Right ultrasonic trigger
-#PIN6 = Right ultrasonic echo
-*/
-
 //how long to wait between moves
 const long interval = 2000; //5s
 
@@ -26,7 +17,13 @@ SoftwareSerial ss = SoftwareSerial(SFX_TX, SFX_RX);
 Adafruit_Soundboard sfx = Adafruit_Soundboard(&ss, NULL, SFX_RST);
 
 
+//Initialize Sensor Pins
 
+#define SENS45 7
+#define SENS55 8
+#define SENS65 9
+#define SENS75 10
+#define SENS85 11
 
 //Initialize Remote
 const uint16_t BUTTON_POWER = 0xD827; // i.e. 0x10EFD827
@@ -57,6 +54,8 @@ long lastmove;
 
 int eeAddress = 0;
 int calibration;
+
+int posnum = 6;
 
 int program = 3;
 int prevprogram = 3;
@@ -91,6 +90,13 @@ void setup()
   Serial.println("Enabling IRin");
   irrecv.enableIRIn(); // Start the receiver
   Serial.println("Enabled IRin");
+
+  pinMode(SENS45, INPUT);
+  pinMode(SENS55, INPUT);
+  pinMode(SENS65, INPUT);
+  pinMode(SENS75, INPUT);
+  pinMode(SENS85, INPUT);
+
 
   //servo
   myservo.attach(SERVO_PIN);
@@ -131,6 +137,7 @@ void setup()
     pos = 90;
   }
 
+
   //myservo.write(pos);
   moveServo(pos);
 
@@ -169,6 +176,45 @@ void moveServo(int target)
   }
 }
 
+void moveServoByNum(int position)
+{
+  switch (position)
+  {
+    case 3:
+    {
+      pos = calibration - 90;
+    }
+    break;
+    case 4:
+    {
+      pos = calibration - 60;
+    }
+    break;
+    case 5:
+    {
+      pos = calibration - 30;
+    }
+    case 6:
+    {
+      pos = calibration;
+    }
+    case 7:
+    {
+      pos = calibration + 30;
+    }
+    case 8:
+    {
+      pos = calibration + 60;
+    }
+    case 9:
+    {
+      pos = calibration + 90;
+    }
+    break;
+  }
+  moveServo(pos);
+}
+
 void loop() {
 
   char trackname[20];
@@ -180,6 +226,152 @@ void loop() {
     Serial.println(track);
     Serial.print("Program mode: ");
     Serial.println(program);
+  }
+
+  if (program == 1)
+  {
+    switch (posnum)
+    {
+      case 3:
+        //position 3
+	//do nothing - you win!
+      break;
+      case 4:
+        //position 4
+	//see if any targets hit
+	//if 4.5 hit, move to 3
+	//otherwise move to 5
+	if (digitalRead(SENS45))
+	{
+	  posnum = 3;
+	  //move servo
+	  moveServoByNum(posnum);
+	  //play T03 sound
+          sprintf(trackname, "%s%s%s", "T03", filenames[track], "OGG\n");
+	  Serial.println(trackname);
+          sfx.playTrack(trackname);
+	}
+	else if (digitalRead(SENS55) || digitalRead(SENS65) || digitalRead(SENS75) || digitalRead(SENS85))
+	{
+	  posnum = 5;
+	  //move servo
+	  moveServoByNum(posnum);
+	  //play T05 sound
+          sprintf(trackname, "%s%s%s", "T05", filenames[track], "OGG\n");
+	  Serial.println(trackname);
+          sfx.playTrack(trackname);
+	}
+      break;
+      case 5:
+        //position 5
+	//see if any targets hit
+	//if 5.5 hit, move to 4
+	//otherwise move to 6
+	if (digitalRead(SENS55))
+	{
+	  posnum = 4;
+	  //move servo
+	  moveServoByNum(posnum);
+	  //play T04 sound
+          sprintf(trackname, "%s%s%s", "T04", filenames[track], "OGG\n");
+	  Serial.println(trackname);
+          sfx.playTrack(trackname);
+	}
+	else if (digitalRead(SENS45) || digitalRead(SENS65) || digitalRead(SENS75) || digitalRead(SENS85))
+	{
+	  posnum = 6;
+	  //move servo
+	  moveServoByNum(posnum);
+	  //play T06 sound
+          sprintf(trackname, "%s%s%s", "T06", filenames[track], "OGG\n");
+	  Serial.println(trackname);
+          sfx.playTrack(trackname);
+	}
+      break;
+      case 6:
+        //position 6
+	//see if any targets hit
+	//if 7.5 hit, move to 5
+	//otherwise move to 7
+	if (digitalRead(SENS75))
+	{
+	  posnum = 5;
+	  //move servo
+	  moveServoByNum(posnum);
+	  //play T05 sound
+          sprintf(trackname, "%s%s%s", "T06", filenames[track], "OGG\n");
+	  Serial.println(trackname);
+          sfx.playTrack(trackname);
+	}
+	else if (digitalRead(SENS45) || digitalRead(SENS55) || digitalRead(SENS65) || digitalRead(SENS85))
+	{
+	  posnum = 7;
+	  //move servo
+	  moveServoByNum(posnum);
+	  //play T07 sound
+          sprintf(trackname, "%s%s%s", "T07", filenames[track], "OGG\n");
+	  Serial.println(trackname);
+          sfx.playTrack(trackname);
+	}
+      break;
+      case 7:
+        //position 7
+	//see if any targets hit
+	//if 7.5 hit, move to 6
+	//otherwise move to 8
+	if (digitalRead(SENS75))
+	{
+	  posnum = 6;
+	  //move servo
+	  moveServoByNum(posnum);
+	  //play T06 sound
+          sprintf(trackname, "%s%s%s", "T06", filenames[track], "OGG\n");
+	  Serial.println(trackname);
+          sfx.playTrack(trackname);
+	}
+	else if (digitalRead(SENS45) || digitalRead(SENS55) || digitalRead(SENS65) || digitalRead(SENS85))
+	{
+	  posnum = 8;
+	  //move servo
+	  moveServoByNum(posnum);
+	  //play T08 sound
+          sprintf(trackname, "%s%s%s", "T08", filenames[track], "OGG\n");
+	  Serial.println(trackname);
+          sfx.playTrack(trackname);
+	}
+      break;
+      case 8:
+        //position 8
+	//see if any targets hit
+	//if 8.5 hit, move to 7
+	//otherwise move to 9
+	if (digitalRead(SENS85))
+	{
+	  posnum = 7;
+	  //move servo
+	  moveServoByNum(posnum);
+	  //play T07 sound
+          sprintf(trackname, "%s%s%s", "T07", filenames[track], "OGG\n");
+	  Serial.println(trackname);
+          sfx.playTrack(trackname);
+	}
+	else if (digitalRead(SENS45) || digitalRead(SENS55) || digitalRead(SENS65) || digitalRead(SENS75))
+	{
+	  posnum = 9;
+	  //move servo
+	  moveServoByNum(posnum);
+	  //play T09 sound
+          sprintf(trackname, "%s%s%s", "T09", filenames[track], "OGG\n");
+	  Serial.println(trackname);
+          sfx.playTrack(trackname);
+	}
+      break;
+      case 9:
+        //position 9
+	//do nothing - you lose :(
+      break;
+    }
+
   }
 
   
@@ -255,6 +447,13 @@ void loop() {
             break;
           case 4: //program select mode
             program = 1;
+	    pos = calibration;
+	    posnum = 6;
+	    moveServoByNum(posnum);
+	    //play T06 sound
+            sprintf(trackname, "%s%s%s", "T06", filenames[track], "OGG\n");
+	    Serial.println(trackname);
+            sfx.playTrack(trackname);
             break;
         }
         //Serial.println(pos);
