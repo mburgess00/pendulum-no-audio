@@ -37,14 +37,14 @@ const uint16_t BUTTON_RIGHT = 0x807F;
 const uint16_t BUTTON_CIRCLE = 0x20DF;
 
 //int RECV_PIN = 2;
-int RECV_PIN = 14;
+const int RECV_PIN = 14;
 IRrecv irrecv(RECV_PIN);
 decode_results results;
 uint16_t lastCode = 0; // This keeps track of the last code RX'd
 
 
 //Initialize Servo
-int SERVO_PIN = 3;
+const int SERVO_PIN = 3;
 Servo myservo;
 int pos;
 
@@ -52,7 +52,7 @@ int count = 0;
 
 long lastmove;
 
-int eeAddress = 0;
+const int eeAddress = 0;
 int calibration;
 
 int posnum = 6;
@@ -540,6 +540,38 @@ void loop() {
             break;
           case 4: //program select mode
             program = 3;
+            //randomly select between 3 and 9
+	    posnum = random(3, 9);
+	    Serial.print("I have chosen position ");
+	    Serial.print(posnum);
+	    Serial.println(" at random");
+	    //play audio
+	    switch (posnum)
+	    {
+              case 3:
+	        sprintf(trackname, "%s%s%s", "T03", filenames[track], "OGG\n");
+		break;
+              case 4:
+	        sprintf(trackname, "%s%s%s", "T04", filenames[track], "OGG\n");
+		break;
+              case 5:
+	        sprintf(trackname, "%s%s%s", "T05", filenames[track], "OGG\n");
+		break;
+              case 6:
+	        sprintf(trackname, "%s%s%s", "T06", filenames[track], "OGG\n");
+		break;
+              case 7:
+	        sprintf(trackname, "%s%s%s", "T07", filenames[track], "OGG\n");
+		break;
+              case 8:
+	        sprintf(trackname, "%s%s%s", "T08", filenames[track], "OGG\n");
+		break;
+              case 9:
+	        sprintf(trackname, "%s%s%s", "T09", filenames[track], "OGG\n");
+		break;
+	    }
+            Serial.println(trackname);
+            sfx.playTrack(trackname);
             break;
         }
         break;
