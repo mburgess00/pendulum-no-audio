@@ -79,6 +79,12 @@ int track = 0;
 
 long lastmillis;
 
+//variables for program C
+bool movingleft = false;
+long penlastmillis;
+const int pendelay = 30;
+
+
 void setup()
 {
   Serial.begin(9600);
@@ -166,7 +172,7 @@ void moveServo(int target)
   }
   else if (current > target)
   {
-    for (movepos =current; movepos >= target; movepos -= 1)
+    for (movepos = current; movepos >= target; movepos -= 1)
     {
 //      Serial.print("Moving to: ");
 //      Serial.println(movepos);
@@ -374,6 +380,43 @@ void loop() {
 
   }
 
+  if (program == 2)
+  {
+      //bool movingleft = false;
+      //long penlastmillis;
+      //const int pendelay = 30;
+      //myservo.write(movepos);
+      //delay(30);
+      if (penlastmillis + pendelay > millis())
+      {
+        if (movingleft)
+	{
+	  if (pos < calibration + 89)
+          {
+	    pos++;
+	  }
+	  else
+	  {
+	    movingleft = false;
+	  }
+	  myservo.write(pos);
+	}
+	else
+	{
+	  if (pos > calibration - 1)
+	  {
+	    pos--;
+	  }
+	  else
+	  {
+            movingleft = true;
+	  }
+	  myservo.write(pos);
+	}
+      }
+      
+  }
+
   
   if (irrecv.decode(&results)) 
   {
@@ -476,6 +519,7 @@ void loop() {
             break;
           case 4: //program select mode
             program = 2;
+	    penlastmillis = millis();
             break;
         }
         break;
