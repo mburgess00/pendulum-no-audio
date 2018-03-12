@@ -93,9 +93,9 @@ void setup()
 
   //wait on serial
   delay(5000);
-  Serial.println("Enabling IRin");
+  //Serial.println("Enabling IRin");
   irrecv.enableIRIn(); // Start the receiver
-  Serial.println("Enabled IRin");
+  //Serial.println("Enabled IRin");
 
   pinMode(SENS45, INPUT);
   pinMode(SENS55, INPUT);
@@ -103,17 +103,16 @@ void setup()
   pinMode(SENS75, INPUT);
   pinMode(SENS85, INPUT);
 
-
   //servo
   myservo.attach(SERVO_PIN);
 
   ss.begin(9600);
  
-  if (!sfx.reset()) {
-    Serial.println("Not found");
-    while (1);
-  }
-  Serial.println("SFX board found");
+  //if (!sfx.reset()) {
+  //  Serial.println("Not found");
+  //  while (1);
+  //}
+  //Serial.println("SFX board found");
 
   uint8_t files = sfx.listFiles();
 
@@ -130,7 +129,7 @@ void setup()
 
     
   EEPROM.get( eeAddress, calibration);
-  Serial.print("Calibration value");
+  Serial.print("Calibration value: ");
   Serial.println(calibration);
 
   if (calibration != -1)
@@ -156,10 +155,10 @@ void moveServo(int target)
 {
   int current = myservo.read();
   int movepos;
-//  Serial.print("Current servo pos: ");
-//  Serial.println(current);
-//  Serial.print("Moving to: ");
-//  Serial.println(target);
+  //Serial.print("Current servo pos: ");
+  //Serial.println(current);
+  //Serial.print("Moving to: ");
+  //Serial.println(target);
   if (current < target)
   {
     for (movepos = current; movepos <= target; movepos += 1)
@@ -184,6 +183,8 @@ void moveServo(int target)
 
 void moveServoByNum(int position)
 {
+  //Serial.print("Moving servo to: ");
+  //Serial.println(position);
   switch (position)
   {
     case 3:
@@ -200,18 +201,22 @@ void moveServoByNum(int position)
     {
       pos = calibration - 30;
     }
+    break;
     case 6:
     {
       pos = calibration;
     }
+    break;
     case 7:
     {
       pos = calibration + 30;
     }
+    break;
     case 8:
     {
       pos = calibration + 60;
     }
+    break;
     case 9:
     {
       pos = calibration + 90;
@@ -228,14 +233,16 @@ void loop() {
   if ((millis() - interval) > lastmillis)
   {
     lastmillis = millis();
-    Serial.print("Track: ");
-    Serial.println(track);
-    Serial.print("Program mode: ");
-    Serial.println(program);
+    //Serial.print("Track: ");
+    //Serial.println(track);
+    //Serial.print("Program mode: ");
+    //Serial.println(program);
   }
 
   if (program == 1)
   {
+    //Serial.print("Position: ");
+    //Serial.println(posnum);
     switch (posnum)
     {
       case 3:
@@ -629,6 +636,7 @@ void loop() {
             if (pos < 180)
             {
               pos++;
+              moveServo(pos);
             }
             break;
           case 1: //program A - interact with pendulum
@@ -640,7 +648,7 @@ void loop() {
             //move pendulum to left
             if (pos < 180)
             {
-              pos += 10;
+              pos += 30;
               moveServo(pos);
             }
             break;
@@ -656,6 +664,7 @@ void loop() {
             if (pos > 0)
             {
               pos--;
+              moveServo(pos);
             }
             break;
           case 1: //program A - interact with pendulum
@@ -667,7 +676,7 @@ void loop() {
             //move pendulum to right
             if (pos > 0)
             {
-              pos -= 10;
+              pos -= 30;
               moveServo(pos);
             }
             break;
