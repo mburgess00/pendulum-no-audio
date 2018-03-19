@@ -461,7 +461,7 @@ void loop() {
           {
             //exit calibration mode
             Serial.println("Calibration mode disabled");
-            sprintf(trackname, "%s", "T06CALDIOGG\n");
+            sprintf(trackname, "%s", "T00CALDIOGG\n");
             Serial.println(trackname);
             sfx.playTrack(trackname);
             EEPROM.put(eeAddress, pos);
@@ -472,7 +472,7 @@ void loop() {
           {
             Serial.println("Mode select enabled");
             //call audio file "please select program"
-            sprintf(trackname, "%s", "T06PROGSOGG\n");
+            sprintf(trackname, "%s", "T00PROGSOGG\n");
             Serial.println(trackname);
             sfx.playTrack(trackname);
             prevprogram = program;
@@ -484,7 +484,7 @@ void loop() {
           program = 0;
           Serial.println("Calibration mode enabled");
           //play audio for calibration mode
-          sprintf(trackname, "%s", "T06CALENOGG\n");
+          sprintf(trackname, "%s", "T00CALENOGG\n");
           Serial.println(trackname);
           sfx.playTrack(trackname);
         }
@@ -709,61 +709,85 @@ void loop() {
               case 3:
                 if (pos < (calibration - 75))
                 {
-                  Serial.println("you nailed it!");
+                  sprintf(trackname, "%s", "T00DINGOGG\n");
+                  Serial.println(trackname);
+                  sfx.playTrack(trackname);
                 }
                 else
                 {
-                  Serial.println("sorry, that's not right");
+                  sprintf(trackname, "%s", "T00URRROGG\n");
+                  Serial.println(trackname);
+                  sfx.playTrack(trackname);
                 }
                 break;
               case 4:
                 if ((pos < (calibration - 45)) && (pos > (calibration - 75)))
                 {
-                  Serial.println("you nailed it!");
+                  sprintf(trackname, "%s", "T00DINGOGG\n");
+                  Serial.println(trackname);
+                  sfx.playTrack(trackname);
                 }
                 else
                 {
-                  Serial.println("sorry, that's not right");
+                  sprintf(trackname, "%s", "T00URRROGG\n");
+                  Serial.println(trackname);
+                  sfx.playTrack(trackname);
                 }
                 break;
               case 5:
                 if ((pos < (calibration - 15)) && (pos > (calibration - 45)))
                 {
-                  Serial.println("you nailed it!");
+                  sprintf(trackname, "%s", "T00DINGOGG\n");
+                  Serial.println(trackname);
+                  sfx.playTrack(trackname);
                 }
                 else
                 {
-                  Serial.println("sorry, that's not right");
+                  sprintf(trackname, "%s", "T00URRROGG\n");
+                  Serial.println(trackname);
+                  sfx.playTrack(trackname);
                 }
                 break;
               case 6:
                 if ((pos < (calibration + 15)) && (pos > (calibration - 15)))
                 {
-                  Serial.println("you nailed it!");
+                  sprintf(trackname, "%s", "T00DINGOGG\n");
+                  Serial.println(trackname);
+                  sfx.playTrack(trackname);
                 }
                 else
                 {
-                  Serial.println("sorry, that's not right");
+                  sprintf(trackname, "%s", "T00URRROGG\n");
+                  Serial.println(trackname);
+                  sfx.playTrack(trackname);
                 }
                 break;
               case 7:
                 if ((pos < (calibration + 45)) && (pos > (calibration + 15)))
                 {
-                  Serial.println("you nailed it!");
+                  sprintf(trackname, "%s", "T00DINGOGG\n");
+                  Serial.println(trackname);
+                  sfx.playTrack(trackname);
                 }
                 else
                 {
-                  Serial.println("sorry, that's not right");
+                  sprintf(trackname, "%s", "T00URRROGG\n");
+                  Serial.println(trackname);
+                  sfx.playTrack(trackname);
                 }
                 break;
               case 8:
                 if ((pos < (calibration + 75)) && (pos > (calibration + 45)))
                 {
-                  Serial.println("you nailed it!");
+                  sprintf(trackname, "%s", "T00DINGOGG\n");
+                  Serial.println(trackname);
+                  sfx.playTrack(trackname);
                 }
                 else
                 {
-                  Serial.println("sorry, that's not right");
+                  sprintf(trackname, "%s", "T00URRROGG\n");
+                  Serial.println(trackname);
+                  sfx.playTrack(trackname);
                 }
                 break;
             }
