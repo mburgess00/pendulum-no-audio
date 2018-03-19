@@ -579,6 +579,7 @@ void loop() {
 	    }
             Serial.println(trackname);
             sfx.playTrack(trackname);
+            moveServoByNum(posnum);
             break;
         }
         break;
