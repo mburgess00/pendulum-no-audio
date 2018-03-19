@@ -394,11 +394,11 @@ void loop() {
       //const int pendelay = 30;
       //myservo.write(movepos);
       //delay(30);
-      if (penlastmillis + pendelay > millis())
+      if ((millis() - pendelay) > penlastmillis)
       {
         if (movingleft)
 	{
-	  if (pos < calibration + 89)
+	  if (pos < 180)
           {
 	    pos++;
 	  }
@@ -410,7 +410,7 @@ void loop() {
 	}
 	else
 	{
-	  if (pos > calibration - 1)
+	  if (pos > 0)
 	  {
 	    pos--;
 	  }
@@ -526,7 +526,7 @@ void loop() {
             break;
           case 4: //program select mode
             program = 2;
-	    penlastmillis = millis();
+	          penlastmillis = millis();
             break;
         }
         break;
