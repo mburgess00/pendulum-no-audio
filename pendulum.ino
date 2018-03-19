@@ -461,6 +461,9 @@ void loop() {
           {
             //exit calibration mode
             Serial.println("Calibration mode disabled");
+            sprintf(trackname, "%s", "T06CALDIOGG\n");
+            Serial.println(trackname);
+            sfx.playTrack(trackname);
             EEPROM.put(eeAddress, pos);
             calibration = pos;
             program = prevprogram;
@@ -469,6 +472,9 @@ void loop() {
           {
             Serial.println("Mode select enabled");
             //call audio file "please select program"
+            sprintf(trackname, "%s", "T06PROGSOGG\n");
+            Serial.println(trackname);
+            sfx.playTrack(trackname);
             prevprogram = program;
             program = 4;
           }
@@ -478,6 +484,9 @@ void loop() {
           program = 0;
           Serial.println("Calibration mode enabled");
           //play audio for calibration mode
+          sprintf(trackname, "%s", "T06CALENOGG\n");
+          Serial.println(trackname);
+          sfx.playTrack(trackname);
         }
         break;
       case BUTTON_A:
@@ -527,6 +536,39 @@ void loop() {
           case 4: //program select mode
             program = 2;
 	          penlastmillis = millis();
+                       //randomly select between 3 and 9
+     posnum = random(3, 9);
+      Serial.print("I have chosen position ");
+      Serial.print(posnum);
+      Serial.println(" at random");
+      //play audio
+      switch (posnum)
+      {
+              case 3:
+          sprintf(trackname, "%s%s%s", "T03", filenames[track], "OGG\n");
+    break;
+              case 4:
+          sprintf(trackname, "%s%s%s", "T04", filenames[track], "OGG\n");
+    break;
+              case 5:
+          sprintf(trackname, "%s%s%s", "T05", filenames[track], "OGG\n");
+    break;
+              case 6:
+          sprintf(trackname, "%s%s%s", "T06", filenames[track], "OGG\n");
+    break;
+              case 7:
+          sprintf(trackname, "%s%s%s", "T07", filenames[track], "OGG\n");
+    break;
+              case 8:
+          sprintf(trackname, "%s%s%s", "T08", filenames[track], "OGG\n");
+    break;
+              case 9:
+          sprintf(trackname, "%s%s%s", "T09", filenames[track], "OGG\n");
+    break;
+      }
+            Serial.println(trackname);
+            sfx.playTrack(trackname);
+            //moveServoByNum(posnum);
             break;
         }
         break;
@@ -541,45 +583,12 @@ void loop() {
           case 2: //program B - guess position
             break;
           case 3: //program C - instructor mode
-            //move pendulum to far right
-            pos = 0;
+            //move pendulum to 6
+            pos = calibration;
             moveServo(pos);
             break;
           case 4: //program select mode
             program = 3;
-            //randomly select between 3 and 9
-	    posnum = random(3, 9);
-	    Serial.print("I have chosen position ");
-	    Serial.print(posnum);
-	    Serial.println(" at random");
-	    //play audio
-	    switch (posnum)
-	    {
-              case 3:
-	        sprintf(trackname, "%s%s%s", "T03", filenames[track], "OGG\n");
-		break;
-              case 4:
-	        sprintf(trackname, "%s%s%s", "T04", filenames[track], "OGG\n");
-		break;
-              case 5:
-	        sprintf(trackname, "%s%s%s", "T05", filenames[track], "OGG\n");
-		break;
-              case 6:
-	        sprintf(trackname, "%s%s%s", "T06", filenames[track], "OGG\n");
-		break;
-              case 7:
-	        sprintf(trackname, "%s%s%s", "T07", filenames[track], "OGG\n");
-		break;
-              case 8:
-	        sprintf(trackname, "%s%s%s", "T08", filenames[track], "OGG\n");
-		break;
-              case 9:
-	        sprintf(trackname, "%s%s%s", "T09", filenames[track], "OGG\n");
-		break;
-	    }
-            Serial.println(trackname);
-            sfx.playTrack(trackname);
-            moveServoByNum(posnum);
             break;
         }
         break;
@@ -695,6 +704,69 @@ void loop() {
             break;
           case 2: //program B - guess position
             //see if pendulum is in the "correct" position
+            switch (posnum)
+            {
+              case 3:
+                if (pos < (calibration - 75))
+                {
+                  Serial.println("you nailed it!");
+                }
+                else
+                {
+                  Serial.println("sorry, that's not right");
+                }
+                break;
+              case 4:
+                if ((pos < (calibration - 45)) && (pos > (calibration - 75)))
+                {
+                  Serial.println("you nailed it!");
+                }
+                else
+                {
+                  Serial.println("sorry, that's not right");
+                }
+                break;
+              case 5:
+                if ((pos < (calibration - 15)) && (pos > (calibration - 45)))
+                {
+                  Serial.println("you nailed it!");
+                }
+                else
+                {
+                  Serial.println("sorry, that's not right");
+                }
+                break;
+              case 6:
+                if ((pos < (calibration + 15)) && (pos > (calibration - 15)))
+                {
+                  Serial.println("you nailed it!");
+                }
+                else
+                {
+                  Serial.println("sorry, that's not right");
+                }
+                break;
+              case 7:
+                if ((pos < (calibration + 45)) && (pos > (calibration + 15)))
+                {
+                  Serial.println("you nailed it!");
+                }
+                else
+                {
+                  Serial.println("sorry, that's not right");
+                }
+                break;
+              case 8:
+                if ((pos < (calibration + 75)) && (pos > (calibration + 45)))
+                {
+                  Serial.println("you nailed it!");
+                }
+                else
+                {
+                  Serial.println("sorry, that's not right");
+                }
+                break;
+            }
             break;
           case 3: //program C - instructor mode
             break;
