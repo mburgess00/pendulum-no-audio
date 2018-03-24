@@ -19,11 +19,12 @@ Adafruit_Soundboard sfx = Adafruit_Soundboard(&ss, NULL, SFX_RST);
 
 //Initialize Sensor Pins
 
-#define SENS45 7
-#define SENS55 8
-#define SENS65 9
-#define SENS75 10
-#define SENS85 11
+#define SENS35 7
+#define SENS45 8
+#define SENS55 9
+#define SENS65 10
+#define SENS75 11
+#define SENS85 12
 
 //Initialize Remote
 const uint16_t BUTTON_POWER = 0xD827; // i.e. 0x10EFD827
