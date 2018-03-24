@@ -590,7 +590,7 @@ void loop() {
             break;
           case 3: //program C - instructor mode
             //move pendulum to 6
-            pos = calibration;
+            pos = 0;
             moveServo(pos);
             break;
           case 4: //program select mode
@@ -715,13 +715,13 @@ void loop() {
               case 3:
                 if (pos < (calibration - 75))
                 {
-                  sprintf(trackname, "%s", "T00DINGOGG\n");
+                  sprintf(trackname, "%s", "T00DINGGOGG\n");
                   Serial.println(trackname);
                   sfx.playTrack(trackname);
                 }
                 else
                 {
-                  sprintf(trackname, "%s", "T00URRROGG\n");
+                  sprintf(trackname, "%s", "T00URRRGOGG\n");
                   Serial.println(trackname);
                   sfx.playTrack(trackname);
                 }
