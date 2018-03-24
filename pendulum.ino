@@ -729,13 +729,13 @@ void loop() {
               case 4:
                 if ((pos < (calibration - 45)) && (pos > (calibration - 75)))
                 {
-                  sprintf(trackname, "%s", "T00DINGOGG\n");
+                  sprintf(trackname, "%s", "T00DINGGOGG\n");
                   Serial.println(trackname);
                   sfx.playTrack(trackname);
                 }
                 else
                 {
-                  sprintf(trackname, "%s", "T00URRROGG\n");
+                  sprintf(trackname, "%s", "T00URRRGOGG\n");
                   Serial.println(trackname);
                   sfx.playTrack(trackname);
                 }
@@ -743,13 +743,13 @@ void loop() {
               case 5:
                 if ((pos < (calibration - 15)) && (pos > (calibration - 45)))
                 {
-                  sprintf(trackname, "%s", "T00DINGOGG\n");
+                  sprintf(trackname, "%s", "T00DINGGOGG\n");
                   Serial.println(trackname);
                   sfx.playTrack(trackname);
                 }
                 else
                 {
-                  sprintf(trackname, "%s", "T00URRROGG\n");
+                  sprintf(trackname, "%s", "T00URRRGOGG\n");
                   Serial.println(trackname);
                   sfx.playTrack(trackname);
                 }
@@ -757,13 +757,13 @@ void loop() {
               case 6:
                 if ((pos < (calibration + 15)) && (pos > (calibration - 15)))
                 {
-                  sprintf(trackname, "%s", "T00DINGOGG\n");
+                  sprintf(trackname, "%s", "T00DINGGOGG\n");
                   Serial.println(trackname);
                   sfx.playTrack(trackname);
                 }
                 else
                 {
-                  sprintf(trackname, "%s", "T00URRROGG\n");
+                  sprintf(trackname, "%s", "T00URRRGOGG\n");
                   Serial.println(trackname);
                   sfx.playTrack(trackname);
                 }
@@ -771,13 +771,13 @@ void loop() {
               case 7:
                 if ((pos < (calibration + 45)) && (pos > (calibration + 15)))
                 {
-                  sprintf(trackname, "%s", "T00DINGOGG\n");
+                  sprintf(trackname, "%s", "T00DINGGOGG\n");
                   Serial.println(trackname);
                   sfx.playTrack(trackname);
                 }
                 else
                 {
-                  sprintf(trackname, "%s", "T00URRROGG\n");
+                  sprintf(trackname, "%s", "T00URRRGOGG\n");
                   Serial.println(trackname);
                   sfx.playTrack(trackname);
                 }
@@ -785,13 +785,13 @@ void loop() {
               case 8:
                 if ((pos < (calibration + 75)) && (pos > (calibration + 45)))
                 {
-                  sprintf(trackname, "%s", "T00DINGOGG\n");
+                  sprintf(trackname, "%s", "T00DINGGOGG\n");
                   Serial.println(trackname);
                   sfx.playTrack(trackname);
                 }
                 else
                 {
-                  sprintf(trackname, "%s", "T00URRROGG\n");
+                  sprintf(trackname, "%s", "T00URRRGOGG\n");
                   Serial.println(trackname);
                   sfx.playTrack(trackname);
                 }
