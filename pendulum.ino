@@ -114,7 +114,7 @@ void setup()
   //}
   //Serial.println("SFX board found");
 
-  uint8_t files = sfx.listFiles();
+/*  uint8_t files = sfx.listFiles();
 
   Serial.println("File Listing");
   Serial.println("========================");
@@ -127,6 +127,7 @@ void setup()
   }
   Serial.println("========================");
 
+*/
     
   EEPROM.get( eeAddress, calibration);
   Serial.print("Calibration value: ");
@@ -134,6 +135,11 @@ void setup()
 
   if (calibration != -1)
   {
+    if ((calibration < 85) || (calibration > 95))
+    {
+      Serial.println("calibration out of range, resetting to 90");
+      calibration = 90;
+    }
     pos = calibration;
   }
   else
