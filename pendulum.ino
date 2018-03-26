@@ -302,7 +302,7 @@ void loop() {
 	  //move servo
 	  moveServoByNum(posnum);
 	  //play T05 sound
-          sprintf(trackname, "%s%s%s", "T06", filenames[track], "OGG\n");
+          sprintf(trackname, "%s%s%s", "T05", filenames[track], "OGG\n");
 	  Serial.println(trackname);
           sfx.playTrack(trackname);
 	}
