@@ -97,6 +97,7 @@ void setup()
   irrecv.enableIRIn(); // Start the receiver
   //Serial.println("Enabled IRin");
 
+  pinMode(SENS35, INPUT);
   pinMode(SENS45, INPUT);
   pinMode(SENS55, INPUT);
   pinMode(SENS65, INPUT);
@@ -254,7 +255,7 @@ void loop() {
 	  Serial.println(trackname);
           sfx.playTrack(trackname);
 	}
-	else if (digitalRead(SENS55)==HIGH || digitalRead(SENS65)==HIGH || digitalRead(SENS75)==HIGH || digitalRead(SENS85)==HIGH)
+	else if (digitalRead(SENS35)==HIGH || digitalRead(SENS55)==HIGH || digitalRead(SENS65)==HIGH || digitalRead(SENS75)==HIGH || digitalRead(SENS85)==HIGH)
 	{
 	  posnum = 5;
 	  //move servo
@@ -280,7 +281,7 @@ void loop() {
 	  Serial.println(trackname);
           sfx.playTrack(trackname);
 	}
-	else if (digitalRead(SENS45)==HIGH || digitalRead(SENS65)==HIGH || digitalRead(SENS75)==HIGH || digitalRead(SENS85)==HIGH)
+	else if (digitalRead(SENS35)==HIGH || digitalRead(SENS45)==HIGH || digitalRead(SENS65)==HIGH || digitalRead(SENS75)==HIGH || digitalRead(SENS85)==HIGH)
 	{
 	  posnum = 6;
 	  //move servo
@@ -306,7 +307,7 @@ void loop() {
 	  Serial.println(trackname);
           sfx.playTrack(trackname);
 	}
-	else if (digitalRead(SENS45)==HIGH || digitalRead(SENS55)==HIGH || digitalRead(SENS65)==HIGH || digitalRead(SENS85)==HIGH)
+	else if (digitalRead(SENS35)==HIGH || digitalRead(SENS45)==HIGH || digitalRead(SENS55)==HIGH || digitalRead(SENS65)==HIGH || digitalRead(SENS85)==HIGH)
 	{
 	  posnum = 7;
 	  //move servo
@@ -332,7 +333,7 @@ void loop() {
 	  Serial.println(trackname);
           sfx.playTrack(trackname);
 	}
-	else if (digitalRead(SENS45)==HIGH || digitalRead(SENS55)==HIGH || digitalRead(SENS65)==HIGH || digitalRead(SENS85)==HIGH)
+	else if (digitalRead(SENS35)==HIGH || digitalRead(SENS45)==HIGH || digitalRead(SENS55)==HIGH || digitalRead(SENS65)==HIGH || digitalRead(SENS85)==HIGH)
 	{
 	  posnum = 8;
 	  //move servo
@@ -358,7 +359,7 @@ void loop() {
 	  Serial.println(trackname);
           sfx.playTrack(trackname);
 	}
-	else if (digitalRead(SENS45)==HIGH || digitalRead(SENS55)==HIGH || digitalRead(SENS65)==HIGH || digitalRead(SENS75)==HIGH)
+	else if (digitalRead(SENS35)==HIGH || digitalRead(SENS45)==HIGH || digitalRead(SENS55)==HIGH || digitalRead(SENS65)==HIGH || digitalRead(SENS75)==HIGH)
 	{
 	  posnum = 9;
 	  //move servo
