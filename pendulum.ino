@@ -539,6 +539,7 @@ void loop() {
         switch (program)
         {
           case 1: //program A - interact with pendulum
+            sprintf(trackname, "%s%s%s%s", "T0", posnum, filenames[track], "OGG\n");
             break;
           case 2: //program B - guess position
             break;
@@ -582,6 +583,11 @@ void loop() {
         {
           case 1: //program A - interact with pendulum
             //move pendulum to left
+            if (posnum < 9)
+            {
+              posnum++;
+            }
+	    moveServoByNum(posnum);
             break;
           case 2: //program B - guess position
             break;
@@ -603,6 +609,11 @@ void loop() {
         {
           case 1: //program A - interact with pendulum
             //move pendulum to right
+            if (posnum > 3)
+            {
+              posnum--;
+            }
+	    moveServoByNum(posnum);
             break;
           case 2: //program B - guess position
             break;
