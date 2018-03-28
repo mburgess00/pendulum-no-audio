@@ -253,6 +253,7 @@ void loop() {
 	  //play T03 sound
           sprintf(trackname, "%s%s%s", "T03", filenames[track], "OGG\n");
 	  Serial.println(trackname);
+          sfx.stop();
           sfx.playTrack(trackname);
 	}
 	else if (digitalRead(SENS35)==HIGH || digitalRead(SENS55)==HIGH || digitalRead(SENS65)==HIGH || digitalRead(SENS75)==HIGH || digitalRead(SENS85)==HIGH)
@@ -263,6 +264,7 @@ void loop() {
 	  //play T05 sound
           sprintf(trackname, "%s%s%s", "T05", filenames[track], "OGG\n");
 	  Serial.println(trackname);
+          sfx.stop();
           sfx.playTrack(trackname);
 	}
       break;
@@ -279,6 +281,7 @@ void loop() {
 	  //play T04 sound
           sprintf(trackname, "%s%s%s", "T04", filenames[track], "OGG\n");
 	  Serial.println(trackname);
+          sfx.stop();
           sfx.playTrack(trackname);
 	}
 	else if (digitalRead(SENS35)==HIGH || digitalRead(SENS45)==HIGH || digitalRead(SENS65)==HIGH || digitalRead(SENS75)==HIGH || digitalRead(SENS85)==HIGH)
@@ -289,6 +292,7 @@ void loop() {
 	  //play T06 sound
           sprintf(trackname, "%s%s%s", "T06", filenames[track], "OGG\n");
 	  Serial.println(trackname);
+          sfx.stop();
           sfx.playTrack(trackname);
 	}
       break;
@@ -305,6 +309,7 @@ void loop() {
 	  //play T05 sound
           sprintf(trackname, "%s%s%s", "T05", filenames[track], "OGG\n");
 	  Serial.println(trackname);
+          sfx.stop();
           sfx.playTrack(trackname);
 	}
 	else if (digitalRead(SENS35)==HIGH || digitalRead(SENS45)==HIGH || digitalRead(SENS55)==HIGH || digitalRead(SENS65)==HIGH || digitalRead(SENS85)==HIGH)
@@ -315,6 +320,7 @@ void loop() {
 	  //play T07 sound
           sprintf(trackname, "%s%s%s", "T07", filenames[track], "OGG\n");
 	  Serial.println(trackname);
+          sfx.stop();
           sfx.playTrack(trackname);
 	}
       break;
@@ -331,6 +337,7 @@ void loop() {
 	  //play T06 sound
           sprintf(trackname, "%s%s%s", "T06", filenames[track], "OGG\n");
 	  Serial.println(trackname);
+          sfx.stop();
           sfx.playTrack(trackname);
 	}
 	else if (digitalRead(SENS35)==HIGH || digitalRead(SENS45)==HIGH || digitalRead(SENS55)==HIGH || digitalRead(SENS65)==HIGH || digitalRead(SENS85)==HIGH)
@@ -341,6 +348,7 @@ void loop() {
 	  //play T08 sound
           sprintf(trackname, "%s%s%s", "T08", filenames[track], "OGG\n");
 	  Serial.println(trackname);
+          sfx.stop();
           sfx.playTrack(trackname);
 	}
       break;
@@ -357,6 +365,7 @@ void loop() {
 	  //play T07 sound
           sprintf(trackname, "%s%s%s", "T07", filenames[track], "OGG\n");
 	  Serial.println(trackname);
+          sfx.stop();
           sfx.playTrack(trackname);
 	}
 	else if (digitalRead(SENS35)==HIGH || digitalRead(SENS45)==HIGH || digitalRead(SENS55)==HIGH || digitalRead(SENS65)==HIGH || digitalRead(SENS75)==HIGH)
@@ -367,6 +376,7 @@ void loop() {
 	  //play T09 sound
           sprintf(trackname, "%s%s%s", "T09", filenames[track], "OGG\n");
 	  Serial.println(trackname);
+          sfx.stop();
           sfx.playTrack(trackname);
 	}
       break;
@@ -433,6 +443,7 @@ void loop() {
         //call audio file "please select program"
         sprintf(trackname, "%s", "T00PROGSOGG\n");
         Serial.println(trackname);
+        sfx.stop();
         sfx.playTrack(trackname);
         prevprogram = program;
         program = 4;
@@ -458,6 +469,7 @@ void loop() {
 	    //play T06 sound
             sprintf(trackname, "%s%s%s", "T06", filenames[track], "OGG\n");
 	    Serial.println(trackname);
+            sfx.stop();
             sfx.playTrack(trackname);
             break;
         }
@@ -511,6 +523,7 @@ void loop() {
                 break;
             }
             Serial.println(trackname);
+            sfx.stop();
             sfx.playTrack(trackname);
             //moveServoByNum(posnum);
             break;
@@ -551,6 +564,7 @@ void loop() {
               track++;
               sprintf(trackname, "%s%s%s", "T00", filenames[track], "OGG\n");
 	      Serial.println(trackname);
+              sfx.stop();
               sfx.playTrack(trackname);
             }
             break;
@@ -572,6 +586,7 @@ void loop() {
               track--;
               sprintf(trackname, "%s%s%s", "T00", filenames[track], "OGG\n");
 	      Serial.println(trackname);
+              sfx.stop();
               sfx.playTrack(trackname);
             }
             break;
@@ -644,12 +659,14 @@ void loop() {
                 {
                   sprintf(trackname, "%s", "T00DINGGOGG\n");
                   Serial.println(trackname);
+                  sfx.stop();
                   sfx.playTrack(trackname);
                 }
                 else
                 {
                   sprintf(trackname, "%s", "T00URRRGOGG\n");
                   Serial.println(trackname);
+                  sfx.stop();
                   sfx.playTrack(trackname);
                 }
                 break;
@@ -658,12 +675,14 @@ void loop() {
                 {
                   sprintf(trackname, "%s", "T00DINGGOGG\n");
                   Serial.println(trackname);
+                  sfx.stop();
                   sfx.playTrack(trackname);
                 }
                 else
                 {
                   sprintf(trackname, "%s", "T00URRRGOGG\n");
                   Serial.println(trackname);
+                  sfx.stop();
                   sfx.playTrack(trackname);
                 }
                 break;
@@ -672,12 +691,14 @@ void loop() {
                 {
                   sprintf(trackname, "%s", "T00DINGGOGG\n");
                   Serial.println(trackname);
+                  sfx.stop();
                   sfx.playTrack(trackname);
                 }
                 else
                 {
                   sprintf(trackname, "%s", "T00URRRGOGG\n");
                   Serial.println(trackname);
+                  sfx.stop();
                   sfx.playTrack(trackname);
                 }
                 break;
@@ -686,12 +707,14 @@ void loop() {
                 {
                   sprintf(trackname, "%s", "T00DINGGOGG\n");
                   Serial.println(trackname);
+                  sfx.stop();
                   sfx.playTrack(trackname);
                 }
                 else
                 {
                   sprintf(trackname, "%s", "T00URRRGOGG\n");
                   Serial.println(trackname);
+                  sfx.stop();
                   sfx.playTrack(trackname);
                 }
                 break;
@@ -700,12 +723,14 @@ void loop() {
                 {
                   sprintf(trackname, "%s", "T00DINGGOGG\n");
                   Serial.println(trackname);
+                  sfx.stop();
                   sfx.playTrack(trackname);
                 }
                 else
                 {
                   sprintf(trackname, "%s", "T00URRRGOGG\n");
                   Serial.println(trackname);
+                  sfx.stop();
                   sfx.playTrack(trackname);
                 }
                 break;
@@ -714,12 +739,14 @@ void loop() {
                 {
                   sprintf(trackname, "%s", "T00DINGGOGG\n");
                   Serial.println(trackname);
+                  sfx.stop();
                   sfx.playTrack(trackname);
                 }
                 else
                 {
                   sprintf(trackname, "%s", "T00URRRGOGG\n");
                   Serial.println(trackname);
+                  sfx.stop();
                   sfx.playTrack(trackname);
                 }
                 break;
