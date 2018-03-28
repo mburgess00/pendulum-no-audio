@@ -109,32 +109,11 @@ void setup()
 
   ss.begin(9600);
  
-  //if (!sfx.reset()) {
-  //  Serial.println("Not found");
-  //  while (1);
-  //}
-  //Serial.println("SFX board found");
-
-/*  uint8_t files = sfx.listFiles();
-
-  Serial.println("File Listing");
-  Serial.println("========================");
-  Serial.println();
-  Serial.print("Found "); Serial.print(files); Serial.println(" Files");
-  for (uint8_t f=0; f<files; f++) {
-    Serial.print(f); 
-    Serial.print("\tname: "); Serial.print(sfx.fileName(f));
-    Serial.print("\tsize: "); Serial.println(sfx.fileSize(f));
-  }
-  Serial.println("========================");
-
-*/
     
 //  EEPROM.get( eeAddress, calibration);
 
   pos = 90;
 
-  //myservo.write(pos);
   moveServo(pos);
 
   lastmove = millis();
@@ -146,16 +125,10 @@ void moveServo(int target)
 {
   int current = myservo.read();
   int movepos;
-  //Serial.print("Current servo pos: ");
-  //Serial.println(current);
-  //Serial.print("Moving to: ");
-  //Serial.println(target);
   if (current < target)
   {
     for (movepos = current; movepos <= target; movepos += 1)
     {
-//      Serial.print("Moving to: ");
-//      Serial.println(movepos);
       myservo.write(movepos);
       delay(30);
     }
@@ -164,8 +137,6 @@ void moveServo(int target)
   {
     for (movepos = current; movepos >= target; movepos -= 1)
     {
-//      Serial.print("Moving to: ");
-//      Serial.println(movepos);
       myservo.write(movepos);
       delay(30);
     }
@@ -174,8 +145,6 @@ void moveServo(int target)
 
 void moveServoByNum(int position)
 {
-  //Serial.print("Moving servo to: ");
-  //Serial.println(position);
   switch (position)
   {
     case 3:
@@ -224,16 +193,10 @@ void loop() {
   if ((millis() - interval) > lastmillis)
   {
     lastmillis = millis();
-    //Serial.print("Track: ");
-    //Serial.println(track);
-    //Serial.print("Program mode: ");
-    //Serial.println(program);
   }
 
   if (program == 1)
   {
-    //Serial.print("Position: ");
-    //Serial.println(posnum);
     switch (posnum)
     {
       case 3:
@@ -390,11 +353,6 @@ void loop() {
 
   if (program == 2)
   {
-      //bool movingleft = false;
-      //long penlastmillis;
-      //const int pendelay = 30;
-      //myservo.write(movepos);
-      //delay(30);
       if ((millis() - pendelay) > penlastmillis)
       {
         if (movingleft)
@@ -473,8 +431,6 @@ void loop() {
             sfx.playTrack(trackname);
             break;
         }
-        //Serial.println(pos);
-	//moveServo(pos);
         break;
       case BUTTON_B:
         Serial.println("B");
@@ -485,7 +441,7 @@ void loop() {
           case 2: //program B - guess position
             break;
           case 3: //program C - instructor mode
-            //move pendulum to bottom (cal)
+            //move pendulum to bottom (90)
             pos = 90;
             moveServo(pos);
             break;
@@ -525,7 +481,6 @@ void loop() {
             Serial.println(trackname);
             sfx.stop();
             sfx.playTrack(trackname);
-            //moveServoByNum(posnum);
             break;
         }
         break;
