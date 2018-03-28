@@ -49,8 +49,6 @@ const int SERVO_PIN = 3;
 Servo myservo;
 int pos;
 
-int count = 0;
-
 long lastmove;
 
 const int eeAddress = 0;
@@ -75,6 +73,7 @@ const char filenames[][6] =
   "RETAI",
   "TECHN"
 };
+
 int track = 0;
 
 long lastmillis;
@@ -110,7 +109,11 @@ void setup()
   ss.begin(9600);
  
     
-//  EEPROM.get( eeAddress, calibration);
+  EEPROM.get(eeAddress, track);
+  if ((track > 5) || (track < 0))
+  {
+    track = 0;
+  }
 
   pos = 90;
 
@@ -514,13 +517,14 @@ void loop() {
           case 3: //program C - instructor mode
             break;
           case 4: //program select mode
-            if ((track < 5)  && (count == 0))
+            if (track < 5)
             {
               track++;
               sprintf(trackname, "%s%s%s", "T00", filenames[track], "OGG\n");
 	      Serial.println(trackname);
               sfx.stop();
               sfx.playTrack(trackname);
+              EEPROM.put(eeAddress, track);
             }
             break;
         }
@@ -536,13 +540,14 @@ void loop() {
           case 3: //program C - instructor mode
             break;
           case 4: //program select mode
-	    if ((track > 0) && (count == 0))
+	    if (track > 0)
             {
               track--;
               sprintf(trackname, "%s%s%s", "T00", filenames[track], "OGG\n");
 	      Serial.println(trackname);
               sfx.stop();
               sfx.playTrack(trackname);
+              EEPROM.put(eeAddress, track);
             }
             break;
         }
