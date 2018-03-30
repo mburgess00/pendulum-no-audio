@@ -475,42 +475,7 @@ void loop() {
           case 4: //program select mode
             program = 2;
             penlastmillis = millis();
-<<<<<<< HEAD
             initB();
-=======
-            //randomly select between 3 and 9
-            posnum = random(3, 9);
-            Serial.print("I have chosen position ");
-            Serial.print(posnum);
-            Serial.println(" at random");
-            //play audio
-            switch (posnum)
-            {
-              case 3:
-                sprintf(trackname, "%s%s%s", "T03", filenames[track], "OGG\n");
-                break;
-              case 4:
-                sprintf(trackname, "%s%s%s", "T04", filenames[track], "OGG\n");
-                break;
-              case 5:
-                sprintf(trackname, "%s%s%s", "T05", filenames[track], "OGG\n");
-                break;
-              case 6:
-                sprintf(trackname, "%s%s%s", "T06", filenames[track], "OGG\n");
-                break;
-              case 7:
-                sprintf(trackname, "%s%s%s", "T07", filenames[track], "OGG\n");
-                break;
-              case 8:
-                sprintf(trackname, "%s%s%s", "T08", filenames[track], "OGG\n");
-                break;
-              case 9:
-                sprintf(trackname, "%s%s%s", "T09", filenames[track], "OGG\n");
-                break;
-            }
-            Serial.println(trackname);
-            sfx.playTrack(trackname);
-            //moveServoByNum(posnum);
             break;
         }
         break;
