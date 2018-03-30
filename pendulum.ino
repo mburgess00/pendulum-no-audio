@@ -636,6 +636,7 @@ void loop() {
                   Serial.println(trackname);
                   sfx.playTrack(trackname);
                   //pick new position
+                  delay(2000);
                   initB();
                 }
                 else
@@ -652,6 +653,7 @@ void loop() {
                   Serial.println(trackname);
                   sfx.playTrack(trackname);
                   //pick new position
+                  delay(2000);
                   initB();
                 }
                 else
@@ -668,6 +670,7 @@ void loop() {
                   Serial.println(trackname);
                   sfx.playTrack(trackname);
                   //pick new position
+                  delay(2000);
                   initB();
                 }
                 else
@@ -684,6 +687,7 @@ void loop() {
                   Serial.println(trackname);
                   sfx.playTrack(trackname);
                   //pick new position
+                  delay(2000);
                   initB();
                 }
                 else
@@ -700,6 +704,7 @@ void loop() {
                   Serial.println(trackname);
                   sfx.playTrack(trackname);
                   //pick new position
+                  delay(2000);
                   initB();
                 }
                 else
@@ -716,6 +721,7 @@ void loop() {
                   Serial.println(trackname);
                   sfx.playTrack(trackname);
                   //pick new position
+                  delay(2000);
                   initB();
                 }
                 else
