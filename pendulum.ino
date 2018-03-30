@@ -172,7 +172,7 @@ void moveServoByNum(int position)
     break;
     case 7:
     {
-      pos = 1200;
+      pos = 120;
     }
     break;
     case 8:
