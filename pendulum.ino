@@ -503,6 +503,8 @@ void loop() {
         {
           case 1: //program A - interact with pendulum
             sprintf(trackname, "%s%s%s%s", "T0", posnum, filenames[track], "OGG\n");
+	    Serial.println(trackname);
+            sfx.playTrack(trackname);
             break;
           case 2: //program B - guess position
             //play the sound again for the user
@@ -530,6 +532,8 @@ void loop() {
                 sprintf(trackname, "%s%s%s", "T09", filenames[track], "OGG\n");
                 break;
             }
+	    Serial.println(trackname);
+            sfx.playTrack(trackname);
             break;
           case 3: //program C - instructor mode
             break;
@@ -636,7 +640,7 @@ void loop() {
                   Serial.println(trackname);
                   sfx.playTrack(trackname);
                   //pick new position
-                  delay(2000);
+                  delay(5000);
                   initB();
                 }
                 else
@@ -653,7 +657,7 @@ void loop() {
                   Serial.println(trackname);
                   sfx.playTrack(trackname);
                   //pick new position
-                  delay(2000);
+                  delay(5000);
                   initB();
                 }
                 else
@@ -670,7 +674,7 @@ void loop() {
                   Serial.println(trackname);
                   sfx.playTrack(trackname);
                   //pick new position
-                  delay(2000);
+                  delay(5000);
                   initB();
                 }
                 else
@@ -687,7 +691,7 @@ void loop() {
                   Serial.println(trackname);
                   sfx.playTrack(trackname);
                   //pick new position
-                  delay(2000);
+                  delay(5000);
                   initB();
                 }
                 else
@@ -704,7 +708,7 @@ void loop() {
                   Serial.println(trackname);
                   sfx.playTrack(trackname);
                   //pick new position
-                  delay(2000);
+                  delay(5000);
                   initB();
                 }
                 else
@@ -721,7 +725,7 @@ void loop() {
                   Serial.println(trackname);
                   sfx.playTrack(trackname);
                   //pick new position
-                  delay(2000);
+                  delay(5000);
                   initB();
                 }
                 else
