@@ -450,6 +450,10 @@ void loop() {
 	    moveServoByNum(posnum);
             break;
           case 4: //program select mode
+            sprintf(trackname, "%s", "T00SELAOGG\n");
+	    Serial.println(trackname);
+            sfx.playTrack(trackname);
+            delay(2000);
             program = 1;
 	    pos = 90;
 	    posnum = 6;
@@ -477,6 +481,10 @@ void loop() {
 	    moveServoByNum(posnum);
             break;
           case 4: //program select mode
+            sprintf(trackname, "%s", "T00SELBOGG\n");
+	    Serial.println(trackname);
+            sfx.playTrack(trackname);
+            delay(2000);
             program = 2;
             penlastmillis = millis();
             initB();
@@ -499,6 +507,10 @@ void loop() {
 	    moveServoByNum(posnum);
             break;
           case 4: //program select mode
+            sprintf(trackname, "%s", "T00SELCOGG\n");
+	    Serial.println(trackname);
+            sfx.playTrack(trackname);
+            delay(2000);
             program = 3;
             break;
         }
