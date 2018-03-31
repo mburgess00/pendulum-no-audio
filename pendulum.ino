@@ -16,13 +16,15 @@ const long interval = 2000; //5s
 SoftwareSerial ss = SoftwareSerial(SFX_TX, SFX_RX);
 Adafruit_Soundboard sfx = Adafruit_Soundboard(&ss, NULL, SFX_RST);
 
+
 //Initialize Sensor Pins
 
-#define SENS45 7
-#define SENS55 8
-#define SENS65 9
-#define SENS75 10
-#define SENS85 11
+#define SENS35 7
+#define SENS45 8
+#define SENS55 9
+#define SENS65 10
+#define SENS75 11
+#define SENS85 12
 
 //Initialize Remote
 const uint16_t BUTTON_POWER = 0xD827; // i.e. 0x10EFD827
@@ -39,7 +41,7 @@ const uint16_t BUTTON_CIRCLE = 0x20DF;
 const int RECV_PIN = 14;
 IRrecv irrecv(RECV_PIN);
 decode_results results;
-uint16_t lastCode = 0; // This keeps track of the last code RX'd
+//uint16_t lastCode = 0; // This keeps track of the last code RX'd
 
 
 //Initialize Servo
@@ -47,12 +49,9 @@ const int SERVO_PIN = 3;
 Servo myservo;
 int pos;
 
-int count = 0;
-
 long lastmove;
 
 const int eeAddress = 0;
-int calibration;
 
 int posnum = 6;
 
@@ -74,6 +73,7 @@ const char filenames[][6] =
   "RETAI",
   "TECHN"
 };
+
 int track = 0;
 
 long lastmillis;
@@ -96,6 +96,7 @@ void setup()
   irrecv.enableIRIn(); // Start the receiver
   //Serial.println("Enabled IRin");
 
+  pinMode(SENS35, INPUT);
   pinMode(SENS45, INPUT);
   pinMode(SENS55, INPUT);
   pinMode(SENS65, INPUT);
@@ -107,48 +108,15 @@ void setup()
 
   ss.begin(9600);
  
-  //if (!sfx.reset()) {
-  //  Serial.println("Not found");
-  //  while (1);
-  //}
-  //Serial.println("SFX board found");
-
-/*  uint8_t files = sfx.listFiles();
-
-  Serial.println("File Listing");
-  Serial.println("========================");
-  Serial.println();
-  Serial.print("Found "); Serial.print(files); Serial.println(" Files");
-  for (uint8_t f=0; f<files; f++) {
-    Serial.print(f); 
-    Serial.print("\tname: "); Serial.print(sfx.fileName(f));
-    Serial.print("\tsize: "); Serial.println(sfx.fileSize(f));
-  }
-  Serial.println("========================");
-
-*/
     
-  EEPROM.get( eeAddress, calibration);
-  Serial.print("Calibration value: ");
-  Serial.println(calibration);
-
-  if (calibration != -1)
+  EEPROM.get(eeAddress, track);
+  if ((track > 5) || (track < 0))
   {
-    if ((calibration < 85) || (calibration > 95))
-    {
-      Serial.println("calibration out of range, resetting to 90");
-      calibration = 90;
-    }
-    pos = calibration;
-  }
-  else
-  {
-    calibration = 90;
-    pos = 90;
+    track = 0;
   }
 
+  pos = 90;
 
-  //myservo.write(pos);
   moveServo(pos);
 
   lastmove = millis();
@@ -160,16 +128,10 @@ void moveServo(int target)
 {
   int current = myservo.read();
   int movepos;
-  //Serial.print("Current servo pos: ");
-  //Serial.println(current);
-  //Serial.print("Moving to: ");
-  //Serial.println(target);
   if (current < target)
   {
     for (movepos = current; movepos <= target; movepos += 1)
     {
-//      Serial.print("Moving to: ");
-//      Serial.println(movepos);
       myservo.write(movepos);
       delay(30);
     }
@@ -178,8 +140,6 @@ void moveServo(int target)
   {
     for (movepos = current; movepos >= target; movepos -= 1)
     {
-//      Serial.print("Moving to: ");
-//      Serial.println(movepos);
       myservo.write(movepos);
       delay(30);
     }
@@ -188,47 +148,81 @@ void moveServo(int target)
 
 void moveServoByNum(int position)
 {
-  //Serial.print("Moving servo to: ");
-  //Serial.println(position);
   switch (position)
   {
     case 3:
     {
-      pos = calibration - 90;
+      pos = 0;
     }
     break;
     case 4:
     {
-      pos = calibration - 60;
+      pos = 30;
     }
     break;
     case 5:
     {
-      pos = calibration - 30;
+      pos = 60;
     }
     break;
     case 6:
     {
-      pos = calibration;
+      pos = 90;
     }
     break;
     case 7:
     {
-      pos = calibration + 30;
+      pos = 120;
     }
     break;
     case 8:
     {
-      pos = calibration + 60;
+      pos = 150;
     }
     break;
     case 9:
     {
-      pos = calibration + 90;
+      pos = 180;
     }
     break;
   }
   moveServo(pos);
+}
+
+void initB()
+{
+  char trackname[20];
+  posnum = random(3, 9);
+  Serial.print("I have chosen position ");
+  Serial.print(posnum);
+  Serial.println(" at random");
+  //play audio
+  switch (posnum)
+  {
+    case 3:
+      sprintf(trackname, "%s%s%s", "T03", filenames[track], "OGG\n");
+      break;
+    case 4:
+      sprintf(trackname, "%s%s%s", "T04", filenames[track], "OGG\n");
+      break;
+    case 5:
+      sprintf(trackname, "%s%s%s", "T05", filenames[track], "OGG\n");
+      break;
+    case 6:
+      sprintf(trackname, "%s%s%s", "T06", filenames[track], "OGG\n");
+      break;
+    case 7:
+      sprintf(trackname, "%s%s%s", "T07", filenames[track], "OGG\n");
+      break;
+    case 8:
+      sprintf(trackname, "%s%s%s", "T08", filenames[track], "OGG\n");
+      break;
+    case 9:
+      sprintf(trackname, "%s%s%s", "T09", filenames[track], "OGG\n");
+      break;
+  }
+  Serial.println(trackname);
+  sfx.playTrack(trackname);
 }
 
 void loop() {
@@ -238,16 +232,10 @@ void loop() {
   if ((millis() - interval) > lastmillis)
   {
     lastmillis = millis();
-    //Serial.print("Track: ");
-    //Serial.println(track);
-    //Serial.print("Program mode: ");
-    //Serial.println(program);
   }
 
   if (program == 1)
   {
-    //Serial.print("Position: ");
-    //Serial.println(posnum);
     switch (posnum)
     {
       case 3:
@@ -269,7 +257,7 @@ void loop() {
 	  Serial.println(trackname);
           sfx.playTrack(trackname);
 	}
-	else if (digitalRead(SENS55)==HIGH || digitalRead(SENS65)==HIGH || digitalRead(SENS75)==HIGH || digitalRead(SENS85)==HIGH)
+	else if (digitalRead(SENS35)==HIGH || digitalRead(SENS55)==HIGH || digitalRead(SENS65)==HIGH || digitalRead(SENS75)==HIGH || digitalRead(SENS85)==HIGH)
 	{
 	  posnum = 5;
 	  //move servo
@@ -295,7 +283,7 @@ void loop() {
 	  Serial.println(trackname);
           sfx.playTrack(trackname);
 	}
-	else if (digitalRead(SENS45)==HIGH || digitalRead(SENS65)==HIGH || digitalRead(SENS75)==HIGH || digitalRead(SENS85)==HIGH)
+	else if (digitalRead(SENS35)==HIGH || digitalRead(SENS45)==HIGH || digitalRead(SENS65)==HIGH || digitalRead(SENS75)==HIGH || digitalRead(SENS85)==HIGH)
 	{
 	  posnum = 6;
 	  //move servo
@@ -317,11 +305,11 @@ void loop() {
 	  //move servo
 	  moveServoByNum(posnum);
 	  //play T05 sound
-          sprintf(trackname, "%s%s%s", "T06", filenames[track], "OGG\n");
+          sprintf(trackname, "%s%s%s", "T05", filenames[track], "OGG\n");
 	  Serial.println(trackname);
           sfx.playTrack(trackname);
 	}
-	else if (digitalRead(SENS45)==HIGH || digitalRead(SENS55)==HIGH || digitalRead(SENS65)==HIGH || digitalRead(SENS85)==HIGH)
+	else if (digitalRead(SENS35)==HIGH || digitalRead(SENS45)==HIGH || digitalRead(SENS55)==HIGH || digitalRead(SENS65)==HIGH || digitalRead(SENS85)==HIGH)
 	{
 	  posnum = 7;
 	  //move servo
@@ -347,7 +335,7 @@ void loop() {
 	  Serial.println(trackname);
           sfx.playTrack(trackname);
 	}
-	else if (digitalRead(SENS45)==HIGH || digitalRead(SENS55)==HIGH || digitalRead(SENS65)==HIGH || digitalRead(SENS85)==HIGH)
+	else if (digitalRead(SENS35)==HIGH || digitalRead(SENS45)==HIGH || digitalRead(SENS55)==HIGH || digitalRead(SENS65)==HIGH || digitalRead(SENS85)==HIGH)
 	{
 	  posnum = 8;
 	  //move servo
@@ -373,7 +361,7 @@ void loop() {
 	  Serial.println(trackname);
           sfx.playTrack(trackname);
 	}
-	else if (digitalRead(SENS45)==HIGH || digitalRead(SENS55)==HIGH || digitalRead(SENS65)==HIGH || digitalRead(SENS75)==HIGH)
+	else if (digitalRead(SENS35)==HIGH || digitalRead(SENS45)==HIGH || digitalRead(SENS55)==HIGH || digitalRead(SENS65)==HIGH || digitalRead(SENS75)==HIGH)
 	{
 	  posnum = 9;
 	  //move servo
@@ -394,11 +382,6 @@ void loop() {
 
   if (program == 2)
   {
-      //bool movingleft = false;
-      //long penlastmillis;
-      //const int pendelay = 30;
-      //myservo.write(movepos);
-      //delay(30);
       if ((millis() - pendelay) > penlastmillis)
       {
         if (movingleft)
@@ -435,23 +418,6 @@ void loop() {
     /* read the RX'd IR into a 16-bit variable: */
     uint16_t resultCode = (results.value & 0xFFFF);
 
-    /* The remote will continue to spit out 0xFFFFFFFF if a 
-     button is held down. If we get 0xFFFFFFF, let's just
-     assume the previously pressed button is being held down */
-
-    if (resultCode == 0xFFFF)
-    {
-      resultCode = lastCode;
-      count++;
-      Serial.println(count);
-    }
-    else
-    {
-      lastCode = resultCode;
-      count = 0;
-    }
-
-
     // This switch statement checks the received IR code against
     // all of the known codes. Each button press produces a 
     // serial output, and has an effect on the LED output.
@@ -459,47 +425,19 @@ void loop() {
     {
       case BUTTON_POWER:
         Serial.println("Power");
-        if (count == 0)
-        {
-          //select which program
-          if (program == 0)
-          {
-            //exit calibration mode
-            Serial.println("Calibration mode disabled");
-            sprintf(trackname, "%s", "T00CALDIOGG\n");
-            Serial.println(trackname);
-            sfx.playTrack(trackname);
-            EEPROM.put(eeAddress, pos);
-            calibration = pos;
-            program = prevprogram;
-          }
-          else
-          {
-            Serial.println("Mode select enabled");
-            //call audio file "please select program"
-            sprintf(trackname, "%s", "T00PROGSOGG\n");
-            Serial.println(trackname);
-            sfx.playTrack(trackname);
-            prevprogram = program;
-            program = 4;
-          }
-        }
-        if (count == 15)
-        {
-          program = 0;
-          Serial.println("Calibration mode enabled");
-          //play audio for calibration mode
-          sprintf(trackname, "%s", "T00CALENOGG\n");
-          Serial.println(trackname);
-          sfx.playTrack(trackname);
-        }
+        //select which program
+        Serial.println("Mode select enabled");
+        //call audio file "please select program"
+        sprintf(trackname, "%s", "T00PROGSOGG\n");
+        Serial.println(trackname);
+        sfx.playTrack(trackname);
+        prevprogram = program;
+        program = 4;
         break;
       case BUTTON_A:
         Serial.println("A");
         switch (program)
         {
-          case 0: //calibration
-            break;
           case 1: //program A - interact with pendulum
             break;
           case 2: //program B - guess position
@@ -511,7 +449,7 @@ void loop() {
             break;
           case 4: //program select mode
             program = 1;
-	    pos = calibration;
+	    pos = 90;
 	    posnum = 6;
 	    moveServoByNum(posnum);
 	    //play T06 sound
@@ -520,60 +458,24 @@ void loop() {
             sfx.playTrack(trackname);
             break;
         }
-        //Serial.println(pos);
-	//moveServo(pos);
         break;
       case BUTTON_B:
         Serial.println("B");
         switch (program)
         {
-          case 0: //calibration
-            break;
           case 1: //program A - interact with pendulum
             break;
           case 2: //program B - guess position
             break;
           case 3: //program C - instructor mode
-            //move pendulum to bottom (cal)
-            pos = calibration;
+            //move pendulum to bottom (90)
+            pos = 90;
             moveServo(pos);
             break;
           case 4: //program select mode
             program = 2;
-	          penlastmillis = millis();
-                       //randomly select between 3 and 9
-     posnum = random(3, 9);
-      Serial.print("I have chosen position ");
-      Serial.print(posnum);
-      Serial.println(" at random");
-      //play audio
-      switch (posnum)
-      {
-              case 3:
-          sprintf(trackname, "%s%s%s", "T03", filenames[track], "OGG\n");
-    break;
-              case 4:
-          sprintf(trackname, "%s%s%s", "T04", filenames[track], "OGG\n");
-    break;
-              case 5:
-          sprintf(trackname, "%s%s%s", "T05", filenames[track], "OGG\n");
-    break;
-              case 6:
-          sprintf(trackname, "%s%s%s", "T06", filenames[track], "OGG\n");
-    break;
-              case 7:
-          sprintf(trackname, "%s%s%s", "T07", filenames[track], "OGG\n");
-    break;
-              case 8:
-          sprintf(trackname, "%s%s%s", "T08", filenames[track], "OGG\n");
-    break;
-              case 9:
-          sprintf(trackname, "%s%s%s", "T09", filenames[track], "OGG\n");
-    break;
-      }
-            Serial.println(trackname);
-            sfx.playTrack(trackname);
-            //moveServoByNum(posnum);
+            penlastmillis = millis();
+            initB();
             break;
         }
         break;
@@ -581,15 +483,13 @@ void loop() {
         Serial.println("C");
         switch (program)
         {
-          case 0: //calibration
-            break;
           case 1: //program A - interact with pendulum
             break;
           case 2: //program B - guess position
             break;
           case 3: //program C - instructor mode
             //move pendulum to 6
-            pos = calibration;
+            pos = 0;
             moveServo(pos);
             break;
           case 4: //program select mode
@@ -601,21 +501,50 @@ void loop() {
         Serial.println("Up");
         switch (program)
         {
-          case 0: //calibration
-            break;
           case 1: //program A - interact with pendulum
+            sprintf(trackname, "%s%s%s%s", "T0", posnum, filenames[track], "OGG\n");
+	    Serial.println(trackname);
+            sfx.playTrack(trackname);
             break;
           case 2: //program B - guess position
+            //play the sound again for the user
+            switch (posnum)
+            {
+              case 3:
+                sprintf(trackname, "%s%s%s", "T03", filenames[track], "OGG\n");
+                break;
+              case 4:
+                sprintf(trackname, "%s%s%s", "T04", filenames[track], "OGG\n");
+                break;
+              case 5:
+                sprintf(trackname, "%s%s%s", "T05", filenames[track], "OGG\n");
+                break;
+              case 6:
+                sprintf(trackname, "%s%s%s", "T06", filenames[track], "OGG\n");
+                break;
+              case 7:
+                sprintf(trackname, "%s%s%s", "T07", filenames[track], "OGG\n");
+                break;
+              case 8:
+                sprintf(trackname, "%s%s%s", "T08", filenames[track], "OGG\n");
+                break;
+              case 9:
+                sprintf(trackname, "%s%s%s", "T09", filenames[track], "OGG\n");
+                break;
+            }
+	    Serial.println(trackname);
+            sfx.playTrack(trackname);
             break;
           case 3: //program C - instructor mode
             break;
           case 4: //program select mode
-            if ((track < 5)  && (count == 0))
+            if (track < 5)
             {
               track++;
               sprintf(trackname, "%s%s%s", "T00", filenames[track], "OGG\n");
 	      Serial.println(trackname);
               sfx.playTrack(trackname);
+              EEPROM.put(eeAddress, track);
             }
             break;
         }
@@ -624,8 +553,6 @@ void loop() {
         Serial.println("Down");
         switch (program)
         {
-          case 0: //calibration
-            break;
           case 1: //program A - interact with pendulum
             break;
           case 2: //program B - guess position
@@ -633,12 +560,13 @@ void loop() {
           case 3: //program C - instructor mode
             break;
           case 4: //program select mode
-	    if ((track > 0) && (count == 0))
+	    if (track > 0)
             {
               track--;
               sprintf(trackname, "%s%s%s", "T00", filenames[track], "OGG\n");
 	      Serial.println(trackname);
               sfx.playTrack(trackname);
+              EEPROM.put(eeAddress, track);
             }
             break;
         }
@@ -647,15 +575,13 @@ void loop() {
         Serial.println("Left");
         switch (program)
         {
-          case 0: //calibration
-            if (pos < 180)
-            {
-              pos++;
-              moveServo(pos);
-            }
-            break;
           case 1: //program A - interact with pendulum
             //move pendulum to left
+            if (posnum < 9)
+            {
+              posnum++;
+            }
+	    moveServoByNum(posnum);
             break;
           case 2: //program B - guess position
             break;
@@ -675,15 +601,13 @@ void loop() {
         Serial.println("Right");
         switch (program)
         {
-          case 0: //calibration
-            if (pos > 0)
-            {
-              pos--;
-              moveServo(pos);
-            }
-            break;
           case 1: //program A - interact with pendulum
             //move pendulum to right
+            if (posnum > 3)
+            {
+              posnum--;
+            }
+	    moveServoByNum(posnum);
             break;
           case 2: //program B - guess position
             break;
@@ -703,8 +627,6 @@ void loop() {
         Serial.println("Circle");
         switch (program)
         {
-          case 0: //calibration
-            break;
           case 1: //program A - interact with pendulum
             break;
           case 2: //program B - guess position
@@ -712,85 +634,103 @@ void loop() {
             switch (posnum)
             {
               case 3:
-                if (pos < (calibration - 75))
+                if (pos < 15)
                 {
-                  sprintf(trackname, "%s", "T00DINGOGG\n");
+                  sprintf(trackname, "%s", "T00DINGGOGG\n");
                   Serial.println(trackname);
                   sfx.playTrack(trackname);
+                  //pick new position
+                  delay(5000);
+                  initB();
                 }
                 else
                 {
-                  sprintf(trackname, "%s", "T00URRROGG\n");
+                  sprintf(trackname, "%s", "T00URRRGOGG\n");
                   Serial.println(trackname);
                   sfx.playTrack(trackname);
                 }
                 break;
               case 4:
-                if ((pos < (calibration - 45)) && (pos > (calibration - 75)))
+                if ((pos < 45) && (pos > 15))
                 {
-                  sprintf(trackname, "%s", "T00DINGOGG\n");
+                  sprintf(trackname, "%s", "T00DINGGOGG\n");
                   Serial.println(trackname);
                   sfx.playTrack(trackname);
+                  //pick new position
+                  delay(5000);
+                  initB();
                 }
                 else
                 {
-                  sprintf(trackname, "%s", "T00URRROGG\n");
+                  sprintf(trackname, "%s", "T00URRRGOGG\n");
                   Serial.println(trackname);
                   sfx.playTrack(trackname);
                 }
                 break;
               case 5:
-                if ((pos < (calibration - 15)) && (pos > (calibration - 45)))
+                if ((pos < 75) && (pos > 45))
                 {
-                  sprintf(trackname, "%s", "T00DINGOGG\n");
+                  sprintf(trackname, "%s", "T00DINGGOGG\n");
                   Serial.println(trackname);
                   sfx.playTrack(trackname);
+                  //pick new position
+                  delay(5000);
+                  initB();
                 }
                 else
                 {
-                  sprintf(trackname, "%s", "T00URRROGG\n");
+                  sprintf(trackname, "%s", "T00URRRGOGG\n");
                   Serial.println(trackname);
                   sfx.playTrack(trackname);
                 }
                 break;
               case 6:
-                if ((pos < (calibration + 15)) && (pos > (calibration - 15)))
+                if ((pos < 105) && (pos > 75))
                 {
-                  sprintf(trackname, "%s", "T00DINGOGG\n");
+                  sprintf(trackname, "%s", "T00DINGGOGG\n");
                   Serial.println(trackname);
                   sfx.playTrack(trackname);
+                  //pick new position
+                  delay(5000);
+                  initB();
                 }
                 else
                 {
-                  sprintf(trackname, "%s", "T00URRROGG\n");
+                  sprintf(trackname, "%s", "T00URRRGOGG\n");
                   Serial.println(trackname);
                   sfx.playTrack(trackname);
                 }
                 break;
               case 7:
-                if ((pos < (calibration + 45)) && (pos > (calibration + 15)))
+                if ((pos < 135) && (pos > 105))
                 {
-                  sprintf(trackname, "%s", "T00DINGOGG\n");
+                  sprintf(trackname, "%s", "T00DINGGOGG\n");
                   Serial.println(trackname);
                   sfx.playTrack(trackname);
+                  //pick new position
+                  delay(5000);
+                  initB();
                 }
                 else
                 {
-                  sprintf(trackname, "%s", "T00URRROGG\n");
+                  sprintf(trackname, "%s", "T00URRRGOGG\n");
                   Serial.println(trackname);
                   sfx.playTrack(trackname);
                 }
                 break;
               case 8:
-                if ((pos < (calibration + 75)) && (pos > (calibration + 45)))
+                if ((pos < 165) && (pos > 135))
                 {
-                  sprintf(trackname, "%s", "T00DINGOGG\n");
+                  sprintf(trackname, "%s", "T00DINGGOGG\n");
                   Serial.println(trackname);
                   sfx.playTrack(trackname);
+                  //pick new position
+                  delay(5000);
+                  initB();
                 }
                 else
                 {
-                  sprintf(trackname, "%s", "T00URRROGG\n");
+                  sprintf(trackname, "%s", "T00URRRGOGG\n");
                   Serial.println(trackname);
                   sfx.playTrack(trackname);
                 }
@@ -804,8 +744,8 @@ void loop() {
         }
         break;
       default:
-        Serial.print("Unrecognized code received: 0x");
-        Serial.println(results.value, HEX);
+        //Serial.print("Unrecognized code received: 0x");
+        //Serial.println(results.value, HEX);
         break;        
     }    
     irrecv.resume(); // Receive the next value
