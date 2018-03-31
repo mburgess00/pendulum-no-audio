@@ -450,7 +450,7 @@ void loop() {
 	    moveServoByNum(posnum);
             break;
           case 4: //program select mode
-            sprintf(trackname, "%s", "T00SELAOGG\n");
+            sprintf(trackname, "%s", "T00PSELAOGG\n");
 	    Serial.println(trackname);
             sfx.playTrack(trackname);
             delay(2000);
@@ -481,7 +481,7 @@ void loop() {
 	    moveServoByNum(posnum);
             break;
           case 4: //program select mode
-            sprintf(trackname, "%s", "T00SELBOGG\n");
+            sprintf(trackname, "%s", "T00PSELBOGG\n");
 	    Serial.println(trackname);
             sfx.playTrack(trackname);
             delay(2000);
@@ -507,7 +507,7 @@ void loop() {
 	    moveServoByNum(posnum);
             break;
           case 4: //program select mode
-            sprintf(trackname, "%s", "T00SELCOGG\n");
+            sprintf(trackname, "%s", "T00PSELCOGG\n");
 	    Serial.println(trackname);
             sfx.playTrack(trackname);
             delay(2000);
