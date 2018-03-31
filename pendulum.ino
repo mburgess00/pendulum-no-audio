@@ -439,6 +439,8 @@ void loop() {
         switch (program)
         {
           case 1: //program A - interact with pendulum
+            posnum = 9;
+	    moveServoByNum(posnum);
             break;
           case 2: //program B - guess position
             break;
@@ -464,6 +466,8 @@ void loop() {
         switch (program)
         {
           case 1: //program A - interact with pendulum
+            posnum = 6;
+	    moveServoByNum(posnum);
             break;
           case 2: //program B - guess position
             break;
@@ -484,6 +488,8 @@ void loop() {
         switch (program)
         {
           case 1: //program A - interact with pendulum
+            posnum = 3;
+	    moveServoByNum(posnum);
             break;
           case 2: //program B - guess position
             break;
