@@ -444,8 +444,8 @@ void loop() {
             break;
           case 3: //program C - instructor mode
             //move pendulum to far left
-            pos = 180;
-            moveServo(pos);
+            posnum = 9;
+	    moveServoByNum(posnum);
             break;
           case 4: //program select mode
             program = 1;
@@ -469,8 +469,8 @@ void loop() {
             break;
           case 3: //program C - instructor mode
             //move pendulum to bottom (90)
-            pos = 90;
-            moveServo(pos);
+            posnum = 6;
+	    moveServoByNum(posnum);
             break;
           case 4: //program select mode
             program = 2;
@@ -488,9 +488,9 @@ void loop() {
           case 2: //program B - guess position
             break;
           case 3: //program C - instructor mode
-            //move pendulum to 6
-            pos = 0;
-            moveServo(pos);
+            //move pendulum to 3
+            posnum = 3;
+	    moveServoByNum(posnum);
             break;
           case 4: //program select mode
             program = 3;
@@ -536,6 +536,8 @@ void loop() {
             sfx.playTrack(trackname);
             break;
           case 3: //program C - instructor mode
+	    Serial.println(trackname);
+            sfx.playTrack(trackname);
             break;
           case 4: //program select mode
             if (track < 5)
@@ -587,11 +589,11 @@ void loop() {
             break;
           case 3: //program C - instructor mode
             //move pendulum to left
-            if (pos < 180)
+            if (posnum < 9)
             {
-              pos += 30;
-              moveServo(pos);
+              posnum++;
             }
+	    moveServoByNum(posnum);
             break;
           case 4: //program select mode
             break;
@@ -613,11 +615,11 @@ void loop() {
             break;
           case 3: //program C - instructor mode
             //move pendulum to right
-            if (pos > 0)
+            if (posnum > 3)
             {
-              pos -= 30;
-              moveServo(pos);
+              posnum--;
             }
+	    moveServoByNum(posnum);
             break;
           case 4: //program select mode
             break;
