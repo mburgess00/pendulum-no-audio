@@ -23,7 +23,6 @@ const int RECV_PIN = 14;
 IRrecv irrecv(RECV_PIN);
 decode_results results;
 
-
 //Initialize Servo
 const int SERVO_PIN = 3;
 Servo myservo;
