@@ -22,7 +22,6 @@ const uint16_t BUTTON_CIRCLE = 0x20DF;
 const int RECV_PIN = 14;
 IRrecv irrecv(RECV_PIN);
 decode_results results;
-//uint16_t lastCode = 0; // This keeps track of the last code RX'd
 
 
 //Initialize Servo
