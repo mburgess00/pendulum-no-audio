@@ -72,8 +72,6 @@ void setup()
   //servo
   myservo.attach(SERVO_PIN);
 
-  ss.begin(9600);
- 
   pos = 90;
 
   moveServo(pos);
