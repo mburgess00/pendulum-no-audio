@@ -185,6 +185,18 @@ void loop() {
       case BUTTON_CIRCLE:
         Serial.println("Circle");
         break;
+      case BUTTON_A:
+        Serial.println("A");
+        posnum = 9;
+        moveServoByNum(posnum);
+      case BUTTON_B:
+        Serial.println("B");
+        posnum = 6;
+        moveServoByNum(posnum);
+      case BUTTON_C:
+        Serial.println("C");
+        posnum = 3;
+        moveServoByNum(posnum);
       default:
         //Serial.print("Unrecognized code received: 0x");
         //Serial.println(results.value, HEX);
