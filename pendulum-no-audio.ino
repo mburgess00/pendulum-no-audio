@@ -18,6 +18,17 @@ const uint16_t BUTTON_LEFT = 0x10EF;
 const uint16_t BUTTON_RIGHT = 0x807F;
 const uint16_t BUTTON_CIRCLE = 0x20DF;
 
+//New Remote Values
+const uint16_t NEW_POWER = 0x629D;
+const uint16_t NEW_A = 0x22DD;
+const uint16_t NEW_B = 0x02FD;
+const uint16_t NEW_C = 0xC23D;
+const uint16_t NEW_UP = 0x9867;
+const uint16_t NEW_DOWN = 0x38C7;
+const uint16_t NEW_LEFT = 0x30CF;
+const uint16_t NEW_RIGHT = 0x7A85;
+const uint16_t NEW_CIRCLE = 0x18E7;
+
 //int RECV_PIN = 2;
 const int RECV_PIN = 14;
 IRrecv irrecv(RECV_PIN);
@@ -160,51 +171,46 @@ void loop() {
     /* read the RX'd IR into a 16-bit variable: */
     uint16_t resultCode = (results.value & 0xFFFF);
 
-    // This switch statement checks the received IR code against
-    // all of the known codes. Each button press produces a 
-    // serial output, and has an effect on the LED output.
-    switch (resultCode)
+    if ((resultCode == BUTTON_LEFT) || (resultCode == NEW_LEFT))
     {
-      case BUTTON_LEFT:
-        Serial.println("Left");
-        //move pendulum to left
         if (posnum < 9)
         {
-          posnum++;
-        }
+	    posnum++;
+	}
 	moveServoByNum(posnum);
-        break;
-      case BUTTON_RIGHT:
-        Serial.println("Right");
-        if (posnum > 3)
+    }
+    if ((resultCode == BUTTON_RIGHT) || (resultCode == NEW_RIGHT))
+    {
+        if (posnum < 3)
         {
-          posnum--;
-        }
+	    posnum--;
+	}
 	moveServoByNum(posnum);
-        break;
-      case BUTTON_CIRCLE:
-        Serial.println("Circle");
-        break;
-      case BUTTON_A:
-        Serial.println("A");
+    }
+    if ((resultCode == BUTTON_CIRCLE) || (resultCode == NEW_CIRCLE))
+    {
+	Serial.println("Circle");
+    }
+    if ((resultCode == BUTTON_A) || (resultCode == NEW_A))
+    {
+	Serial.println("A");
         posnum = 9;
         moveServoByNum(posnum);
-        break;
-      case BUTTON_B:
-        Serial.println("B");
+    }
+    if ((resultCode == BUTTON_B) || (resultCode == NEW_B))
+    {
+	Serial.println("B");
         posnum = 6;
         moveServoByNum(posnum);
-        break;
-      case BUTTON_C:
-        Serial.println("C");
+    }
+    if ((resultCode == BUTTON_C) || (resultCode == NEW_C))
+    {
+	Serial.println("C");
         posnum = 3;
         moveServoByNum(posnum);
-        break;
-      default:
-        //Serial.print("Unrecognized code received: 0x");
-        //Serial.println(results.value, HEX);
-        break;        
-    }    
+    }
+        
+
     irrecv.resume(); // Receive the next value
   }
   delay(100);
