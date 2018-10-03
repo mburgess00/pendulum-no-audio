@@ -171,6 +171,10 @@ void loop() {
     /* read the RX'd IR into a 16-bit variable: */
     uint16_t resultCode = (results.value & 0xFFFF);
 
+    Serial.println(resultCode);
+
+
+
     if ((resultCode == BUTTON_LEFT) || (resultCode == NEW_LEFT))
     {
         if (posnum < 9)
