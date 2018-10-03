@@ -165,6 +165,8 @@ void loop() {
     lastmillis = millis();
   }
 
+  Serial.println("Looping...");
+
   
   if (irrecv.decode(&results)) 
   {
