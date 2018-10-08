@@ -186,7 +186,7 @@ void loop() {
     }
     if ((resultCode == BUTTON_RIGHT) || (resultCode == NEW_RIGHT))
     {
-        if (posnum < 3)
+        if (posnum > 3)
         {
 	    posnum--;
 	}
