@@ -30,7 +30,7 @@ const uint16_t NEW_RIGHT = 0x7A85;
 const uint16_t NEW_CIRCLE = 0x18E7;
 
 //int RECV_PIN = 2;
-const int RECV_PIN = 14;
+const int RECV_PIN = 4;
 IRrecv irrecv(RECV_PIN);
 decode_results results;
 
@@ -165,7 +165,6 @@ void loop() {
     lastmillis = millis();
   }
 
-  Serial.println("Looping...");
 
   
   if (irrecv.decode(&results)) 
@@ -173,7 +172,7 @@ void loop() {
     /* read the RX'd IR into a 16-bit variable: */
     uint16_t resultCode = (results.value & 0xFFFF);
 
-    Serial.println(resultCode);
+    //Serial.println(resultCode);
 
 
 
@@ -199,19 +198,19 @@ void loop() {
     }
     if ((resultCode == BUTTON_A) || (resultCode == NEW_A))
     {
-	Serial.println("A");
+	//Serial.println("A");
         posnum = 9;
         moveServoByNum(posnum);
     }
     if ((resultCode == BUTTON_B) || (resultCode == NEW_B))
     {
-	Serial.println("B");
+	//Serial.println("B");
         posnum = 6;
         moveServoByNum(posnum);
     }
     if ((resultCode == BUTTON_C) || (resultCode == NEW_C))
     {
-	Serial.println("C");
+	//Serial.println("C");
         posnum = 3;
         moveServoByNum(posnum);
     }
